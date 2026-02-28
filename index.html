@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>UltraKcalc – Página Inicial</title>
+  <!-- Define o ícone da aba do navegador usando a logo transparente -->
+  <link rel="icon" type="image/png" href="69df2eb4-bfdc-4633-b414-444ce7a7c3c5.png" sizes="512x512">
+  <style>
+    /* Reset básico e cores de fundo gerais */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #F7F9FB;
+      color: #333;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* Capa principal (hero) ocupa toda a viewport e centraliza o conteúdo */
+    .hero-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      width: 100vw;
+      text-align: center;
+      background:
+        linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.85)),
+        url('hero_background.png'),
+        radial-gradient(circle at 15% 25%, rgba(42, 128, 124, 0.15), rgba(42, 128, 124, 0) 60%),
+        radial-gradient(circle at 85% 80%, rgba(255, 128, 92, 0.12), rgba(255, 128, 92, 0) 65%),
+        linear-gradient(135deg, #EAF4F3 0%, #F7F9FB 100%);
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      /* Reduzimos ainda mais o padding superior para subir o logotipo, a frase e o botão "Usar" em relação ao link da patente */
+      padding: 50px 20px 20px;
+      box-sizing: border-box;
+      position: relative;
+      justify-content: flex-start;
+    }
+
+    .hero-logo {
+      width: 300px;
+      height: auto;
+      /* leve espaçamento inferior para aproximar os elementos seguintes */
+      margin-bottom: 10px;
+      border-radius: 0;
+      box-shadow: none;
+    }
+
+    .hero-section h1 {
+      font-size: 3rem;
+      /* Ajuste de margem para aproximar o título do logo e do subtítulo */
+      margin: -5px 0 5px;
+      font-weight: 700;
+    }
+
+    .hero-tagline {
+      /* Reduza o espaço inferior do subtítulo para aproximá-lo do botão */
+      margin: 0 0 10px;
+      font-size: 1.2rem;
+      opacity: 0.9;
+    }
+
+    .hero-btn {
+      display: inline-block;
+      padding: 12px 32px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      background-color: #59b440;
+      color: #FFFFFF;
+      text-decoration: none;
+      transition: background-color 0.2s ease;
+    }
+    .hero-btn:hover {
+      background-color: #017d6e;
+    }
+
+    /* Elemento de patente posicionado no rodapé da capa */
+    .hero-patent {
+      position: absolute;
+      bottom: 20px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #2A807C;
+    }
+    .hero-patent a {
+      color: inherit;
+      text-decoration: underline;
+    }
+
+    /* Top navigation bar for page navigation */
+    .topbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      /* cabeçalho suave utilizando tons inspirados no logo da UltraKcalc */
+      background: linear-gradient(90deg, #EAF7EE 0%, #F7F9FB 100%);
+      color: #017d6e;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      z-index: 999;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    .topbar .logo-link {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      color: inherit;
+    }
+    .topbar .logo-link img {
+      width: 40px;
+      height: 40px;
+      margin-right: 10px;
+    }
+    .topbar .logo-link span {
+      font-size: 1.3rem;
+      font-weight: bold;
+    }
+    .topbar .top-nav {
+      display: flex;
+      gap: 15px;
+      margin-left: 20px;
+      flex-wrap: wrap;
+    }
+    .topbar .top-nav a {
+      display: flex;
+      align-items: center;
+      color: #017d6e;
+      text-decoration: none;
+      font-size: 0.9rem;
+      padding: 6px 10px;
+      border-radius: 0.35rem;
+      transition: background-color 0.2s ease, color 0.2s ease;
+    }
+    .topbar .top-nav a svg {
+      width: 16px;
+      height: 16px;
+      margin-right: 5px;
+      fill: currentColor;
+    }
+    .topbar .top-nav a:hover {
+      background-color: #59b440;
+      color: #fff;
+    }
+
+    /* Hide original hero links, replaced by topbar */
+    .hero-links {
+      display: none;
+    }
+    .text-light {
+      color: #59b440;
+    }
+    .text-dark {
+      color: #017d6e;
+    }
+  </style>
+</head>
+<body>
+  <!-- Top header with logo and navigation -->
+  <header class="topbar">
+    <a href="index.html" class="logo-link">
+      <img src="new_logo.png" alt="UltraKcalc logo">
+      <span><span style="color:#59b440;">Ultra</span><span style="color:#017d6e;">Kcalc</span></span>
+    </a>
+    <nav class="top-nav">
+      <a href="apresentacao.html">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="3" y="4" width="18" height="12" rx="2" ry="2"></rect>
+          <polygon points="10,8 16,12 10,16"></polygon>
+          <rect x="3" y="18" width="18" height="2"></rect>
+        </svg>
+        Apresentação
+      </a>
+      <a href="citacao.html">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"></path>
+        </svg>
+        Como citar
+      </a>
+      <!-- Link para a calculadora -->
+      <a href="calculadora.html">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+          <rect x="6" y="6" width="3" height="3"></rect>
+          <rect x="11" y="6" width="3" height="3"></rect>
+          <rect x="16" y="6" width="3" height="3"></rect>
+          <rect x="6" y="11" width="3" height="3"></rect>
+          <rect x="11" y="11" width="3" height="3"></rect>
+          <rect x="16" y="11" width="3" height="3"></rect>
+          <rect x="6" y="16" width="3" height="3"></rect>
+          <rect x="11" y="16" width="3" height="3"></rect>
+          <rect x="16" y="16" width="3" height="3"></rect>
+        </svg>
+        Calculadora
+      </a>
+      <a href="https://drive.google.com/drive/folders/1x-SkAtpkdreA1mDAmxJscQdTvQw6Vept" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1 .9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6z"></path>
+          <polygon points="14,2 14,8 20,8"></polygon>
+        </svg>
+        Manual do usuário
+      </a>
+    </nav>
+  </header>
+  <section class="hero-section">
+    <!-- Barra de navegação no topo -->
+    <div class="hero-links">
+      <a class="hero-link" href="apresentacao.html">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="3" y="4" width="18" height="12" rx="2" ry="2" fill="currentColor"></rect>
+          <polygon points="10,8 16,12 10,16" fill="currentColor"></polygon>
+          <rect x="3" y="18" width="18" height="2" fill="currentColor"></rect>
+        </svg>
+        Apresentação
+      </a>
+      <a class="hero-link" href="citacao.html">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" fill="currentColor"></path>
+        </svg>
+        Como citar
+      </a>
+      <a class="hero-link" href="https://drive.google.com/drive/folders/1x-SkAtpkdreA1mDAmxJscQdTvQw6Vept" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1 .9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6z" fill="currentColor"></path>
+          <polygon points="14,2 14,8 20,8" fill="currentColor"></polygon>
+        </svg>
+        Manual do usuário
+      </a>
+    </div>
+    <!-- Logo e título principal -->
+    <img class="hero-logo" src="new_logo.png" alt="UltraKcalc logo">
+    <h1><span class="text-light">Ultra</span><span class="text-dark">Kcalc</span></h1>
+    <p class="hero-tagline text-dark">Calculadora de nutrientes e energia de alimentos ultraprocessados</p>
+    <!-- Botão principal redireciona para a página de cálculo -->
+    <a href="calculadora.html" class="hero-btn">Usar</a>
+    <!-- Patente do programa -->
+    <p class="hero-patent">
+      <a href="https://revistas.inpi.gov.br/pdf/Programa_de_computador2863.pdf" target="_blank" rel="noopener noreferrer">
+        BR 51 2025 005845-4
+      </a>
+    </p>
+  </section>
+</body>
+</html>

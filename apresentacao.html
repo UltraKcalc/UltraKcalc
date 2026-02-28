@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apresentação – UltraKcalc</title>
+  <link rel="icon" type="image/png" href="69df2eb4-bfdc-4633-b414-444ce7a7c3c5.png" sizes="512x512">
+  <style>
+    :root {
+      --primary-color: #017d6e;
+      --primary-light: #EAF7EE;
+      --secondary-color: #59b440;
+      --text-color: #333;
+      --bg-color: #F7F9FB;
+      --white: #ffffff;
+      --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      --transition: all 0.3s ease;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      line-height: 1.6;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* Top navigation bar (Original Style) */
+    .topbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: linear-gradient(90deg, var(--primary-light) 0%, var(--bg-color) 100%);
+      color: var(--primary-color);
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      z-index: 999;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .logo-link {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .logo-link img {
+      width: 40px;
+      height: 40px;
+      margin-right: 10px;
+    }
+
+    .logo-link span {
+      font-size: 1.3rem;
+      font-weight: bold;
+    }
+
+    .top-nav {
+      display: flex;
+      gap: 15px;
+      margin-left: 20px;
+      flex-wrap: wrap;
+    }
+
+    .top-nav a {
+      display: flex;
+      align-items: center;
+      color: var(--primary-color);
+      text-decoration: none;
+      font-size: 0.9rem;
+      padding: 6px 10px;
+      border-radius: 0.35rem;
+      transition: background-color 0.2s ease, color 0.2s ease;
+    }
+
+    .top-nav a svg {
+      width: 16px;
+      height: 16px;
+      margin-right: 5px;
+      fill: currentColor;
+    }
+
+    .top-nav a:hover {
+      background-color: var(--secondary-color);
+      color: var(--white);
+    }
+
+    /* Hero Section (Banner de Impacto) */
+    .hero {
+      background: linear-gradient(135deg, var(--primary-color) 0%, #2A807C 100%);
+      color: var(--white);
+      padding: 160px 20px 80px;
+      text-align: center;
+      clip-path: ellipse(150% 100% at 50% 0%);
+    }
+
+    .hero h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      font-weight: 800;
+      animation: fadeInUp 0.8s ease-out;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      max-width: 800px;
+      margin: 0 auto;
+      opacity: 0.9;
+      animation: fadeInUp 1s ease-out;
+    }
+
+    /* Content Sections */
+    .container {
+      max-width: 900px;
+      margin: -40px auto 60px;
+      padding: 0 20px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .card {
+      background: var(--white);
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      margin-bottom: 30px;
+      animation: fadeInUp 1.2s ease-out;
+    }
+
+    .card h2 {
+      color: var(--primary-color);
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .card h2::before {
+      content: '';
+      display: inline-block;
+      width: 6px;
+      height: 30px;
+      background: var(--secondary-color);
+      border-radius: 3px;
+    }
+
+    .card h3 {
+      color: var(--primary-color);
+      font-size: 1.4rem;
+      margin: 30px 0 15px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--primary-light);
+    }
+
+    .card p {
+      margin-bottom: 20px;
+      text-align: justify;
+      color: #444;
+      font-size: 1.05rem;
+      line-height: 1.7;
+    }
+
+    /* Público-alvo Modernizado */
+    .target-audience-list {
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 15px;
+      margin: 25px 0;
+      padding: 0;
+    }
+
+    .target-audience-list li {
+      background: var(--primary-light);
+      padding: 15px 20px;
+      border-radius: 12px;
+      color: var(--primary-color);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: var(--transition);
+      border-left: 4px solid var(--secondary-color);
+    }
+
+    .target-audience-list li::before {
+      content: '✓';
+      font-weight: 900;
+      color: var(--secondary-color);
+    }
+
+    .target-audience-list li:hover {
+      transform: scale(1.03);
+      background-color: #dcf2e3;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    .card a {
+      color: var(--primary-color);
+      text-decoration: none;
+      font-weight: 600;
+      transition: var(--transition);
+      border-bottom: 1px solid transparent;
+    }
+
+    .card a:hover {
+      color: var(--secondary-color);
+      border-bottom-color: var(--secondary-color);
+    }
+
+    /* Footer Navigation (Mobile friendly) */
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: var(--white);
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+      padding: 10px 0;
+      justify-content: space-around;
+      z-index: 1000;
+    }
+
+    .mobile-nav a {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-decoration: none;
+      color: #666;
+      font-size: 0.7rem;
+      gap: 4px;
+    }
+
+    .mobile-nav a.active {
+      color: var(--primary-color);
+    }
+
+    .mobile-nav svg {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .top-nav {
+        display: none;
+      }
+      .mobile-nav {
+        display: flex;
+      }
+      .hero {
+        padding: 120px 20px 60px;
+      }
+      .hero h1 {
+        font-size: 1.8rem;
+      }
+      .card {
+        padding: 25px;
+      }
+      .card h2 {
+        font-size: 1.5rem;
+      }
+      .container {
+        margin-top: -30px;
+        margin-bottom: 80px;
+      }
+      .target-audience-list {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Top header (Original Restored) -->
+  <header class="topbar">
+    <a href="index.html" class="logo-link">
+      <img src="new_logo.png" alt="UltraKcalc logo">
+      <span><span style="color:#59b440;">Ultra</span><span style="color:#017d6e;">Kcalc</span></span>
+    </a>
+    <nav class="top-nav">
+      <a href="apresentacao.html">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="3" y="4" width="18" height="12" rx="2" ry="2"></rect>
+          <polygon points="10,8 16,12 10,16"></polygon>
+          <rect x="3" y="18" width="18" height="2"></rect>
+        </svg>
+        Apresentação
+      </a>
+      <a href="citacao.html">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"></path>
+        </svg>
+        Como citar
+      </a>
+      <a href="calculadora.html">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+          <rect x="6" y="6" width="3" height="3"></rect>
+          <rect x="11" y="6" width="3" height="3"></rect>
+          <rect x="16" y="6" width="3" height="3"></rect>
+          <rect x="6" y="11" width="3" height="3"></rect>
+          <rect x="11" y="11" width="3" height="3"></rect>
+          <rect x="16" y="11" width="3" height="3"></rect>
+          <rect x="6" y="16" width="3" height="3"></rect>
+          <rect x="11" y="16" width="3" height="3"></rect>
+          <rect x="16" y="16" width="3" height="3"></rect>
+        </svg>
+        Calculadora
+      </a>
+      <a href="https://drive.google.com/drive/folders/1x-SkAtpkdreA1mDAmxJscQdTvQw6Vept" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1 .9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6z"></path>
+          <polygon points="14,2 14,8 20,8"></polygon>
+        </svg>
+        Manual do usuário
+      </a>
+    </nav>
+  </header>
+
+  <!-- Hero Section (Banner de Impacto) -->
+  <section class="hero">
+    <h1>Conheça a UltraKcalc</h1>
+    <p>A solução tecnológica baseada em evidência científica para a análise do consumo de alimentos ultraprocessados.</p>
+  </section>
+
+  <!-- Main Content (Original Text) -->
+  <main class="container">
+    <div class="card">
+      <h2>O que é a UltraKcalc?</h2>
+      <p>A UltraKcalc (Ultra‑Processed Food Energy and Nutrients Calculator) é uma ferramenta científica desenvolvida no Instituto de Nutrição da Universidade do Estado do Rio de Janeiro (UERJ) com o objetivo de aprimorar a análise do consumo alimentar a partir da integração entre o cálculo de energia e nutrientes e a classificação dos alimentos segundo o grau de processamento. A ferramenta foi concebida para apoiar avaliações dietéticas mais precisas, padronizadas e reprodutíveis, especialmente em estudos que investigam o consumo de alimentos ultraprocessados.</p>
+      <p>Apesar do avanço consistente da literatura que relaciona o consumo de alimentos ultraprocessados a desfechos adversos em saúde, ainda existem limitações metodológicas importantes na forma como esse consumo é mensurado. A UltraKcalc foi desenvolvida justamente para preencher essa lacuna, oferecendo uma solução tecnológica baseada em evidência científica, capaz de reduzir vieses de classificação, aumentar a eficiência das análises e contribuir para a qualificação da produção científica e da prática profissional em nutrição.</p>
+      
+      <h3>Como surgiu a UltraKcalc?</h3>
+      <p>A UltraKcalc surgiu a partir de uma demanda metodológica concreta identificada no campo da pesquisa em nutrição, especialmente no âmbito da avaliação do consumo de alimentos ultraprocessados por meio de recordatórios alimentares de 24 horas. Embora amplamente utilizados em estudos epidemiológicos e clínicos, esses instrumentos impõem desafios significativos quando se trata da classificação dos alimentos segundo o nível de processamento. Esse processo exige análise detalhada dos ingredientes e da forma de preparo, o que torna a classificação altamente dependente do julgamento do pesquisador.</p>
+      <p>Tradicionalmente, a classificação dos alimentos segundo a classificação NOVA é realizada de forma manual, alimento por alimento, a partir da interpretação individual dos critérios conceituais da classificação. Esse procedimento, além de ser extremamente trabalhoso e demorado, está sujeito a erros operacionais e, sobretudo, a discordâncias entre pesquisadores, mesmo quando todos possuem treinamento prévio e utilizam as mesmas diretrizes teóricas. Essas inconsistências comprometem a padronização das análises, dificultam a reprodutibilidade dos estudos e representam uma limitação metodológica relevante na investigação do consumo de alimentos ultraprocessados.</p>
+      <p>Diante desse cenário, foi desenvolvido um estudo científico com o objetivo de avaliar a viabilidade do uso de modelos de inteligência artificial baseados em linguagem natural na classificação de alimentos segundo a classificação NOVA. O estudo buscou verificar se esses modelos seriam capazes de reproduzir, de forma consistente, decisões classificatórias semelhantes às realizadas por um nutricionista pesquisador treinado, considerado o padrão de referência.</p>
+      <p>Os resultados desse estudo deram origem ao artigo científico “<a href="https://www.sciencedirect.com/science/article/abs/pii/S0899900725003831?via%3Dihub" target="_blank" rel="noopener noreferrer">Comparing ChatGPT and DeepSeek for ultra-processed food classification: AI models for nutritional research and dietary assessment</a>”, publicado na revista Nutrition, e forneceram o embasamento conceitual e metodológico para o desenvolvimento da UltraKcalc. A partir dessas evidências, tornou‑se possível avançar da investigação científica para a construção de uma ferramenta aplicada, capaz de transformar um problema metodológico recorrente em uma solução tecnológica alinhada ao rigor científico, à padronização das análises e às necessidades atuais da pesquisa em nutrição.</p>
+    </div>
+
+    <div class="card">
+      <h2>Inteligência Artificial</h2>
+      <p>A UltraKcalc integra a inteligência artificial de forma criteriosa e metodologicamente orientada ao processo de classificação de alimentos segundo o nível de processamento. Essa integração se apoia nos resultados do estudo que fundamentou o desenvolvimento da ferramenta, o qual demonstrou que o modelo ChatGPT, quando orientado por um prompt estruturado e alinhado aos critérios oficiais da classificação NOVA, apresentou desempenho muito próximo ao de um nutricionista pesquisador treinado, com elevados níveis de acurácia e concordância.</p>
+      <p>Esses achados indicam que modelos de linguagem, quando utilizados de maneira controlada e cientificamente orientada, podem atuar como ferramentas de apoio confiáveis na avaliação dietética. Na UltraKcalc, a inteligência artificial é empregada para padronizar decisões classificatórias, reduzir erros decorrentes de interpretações individuais e aumentar a reprodutibilidade das análises, especialmente em contextos que envolvem grandes volumes de dados alimentares.</p>
+      <p>Além de contribuir para a padronização, a incorporação da inteligência artificial torna os processos analíticos mais eficientes, reduzindo o tempo necessário para a classificação dos alimentos sem comprometer o rigor metodológico. A IA é utilizada de forma complementar ao conhecimento técnico do nutricionista e do pesquisador, preservando o papel central do julgamento profissional e reforçando a UltraKcalc como uma aplicação responsável e inovadora da inteligência artificial na área da nutrição.</p>
+      <p>Na prática, a inteligência artificial está integrada à UltraKcalc por meio da aba “Adicionar alimentos”, oferecendo suporte direto ao usuário no momento da inserção de novos itens alimentares. Quando o usuário não possui clareza sobre o nível de processamento de determinado alimento, a ferramenta disponibiliza um link de acesso a um modelo de ChatGPT previamente treinado, permitindo que, a partir das informações fornecidas sobre a composição, ingredientes e forma de preparo do alimento, o modelo indique o nível de processamento correspondente segundo a classificação NOVA. Esse recurso foi desenvolvido como um apoio à tomada de decisão, auxiliando o usuário a realizar classificações mais consistentes e alinhadas aos critérios científicos adotados pela ferramenta, sem substituir a análise crítica e o julgamento técnico do profissional.</p>
+    </div>
+
+    <div class="card">
+      <h2>Público-alvo</h2>
+      <ul class="target-audience-list">
+        <li>Pesquisadores da área da Nutrição e da Saúde</li>
+        <li>Nutricionistas em contextos clínicos, coletivos e institucionais</li>
+        <li>Projetos de extensão universitária</li>
+        <li>Grupos de pesquisa</li>
+        <li>Instituições acadêmicas</li>
+        <li>Profissionais da saúde pública interessados no monitoramento do consumo de alimentos ultraprocessados</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>Qual é a base de dados utilizada na UltraKcalc?</h2>
+      <p>A UltraKcalc utiliza como base para o cálculo de energia, macronutrientes e micronutrientes os dados da <a href="https://www.tbca.net.br/" target="_blank" rel="noopener noreferrer">Tabela Brasileira de Composição de Alimentos (TBCA)</a>, uma referência oficial amplamente utilizada em pesquisas científicas, inquéritos alimentares e na prática profissional em nutrição no Brasil. A incorporação da TBCA à ferramenta garante padronização dos valores nutricionais, confiabilidade das estimativas e comparabilidade dos resultados com estudos nacionais, além de assegurar alinhamento com bases de dados reconhecidas e atualizadas.</p>
+      <p>Para além do cálculo nutricional, a UltraKcalc integra de forma estruturada a classificação dos alimentos segundo o nível de processamento, adotando como referencial conceitual a classificação NOVA, amplamente utilizada na literatura científica e em documentos de saúde pública. Cada alimento presente na TBCA foi associado a um nível de processamento específico, com base em critérios padronizados e previamente definidos, respeitando os princípios conceituais da NOVA e garantindo uniformidade na classificação dos itens alimentares.</p>
+      <p>Os dados referentes à classificação do nível de processamento dos alimentos utilizados na UltraKcalc são provenientes diretamente do artigo científico que fundamentou o desenvolvimento da ferramenta, no qual os alimentos da TBCA foram classificados de forma sistemática, tendo como referência um nutricionista pesquisador treinado na aplicação da classificação NOVA. A utilização desses dados permite que a ferramenta opere com uma base de classificação previamente estruturada, reduzindo inconsistências, aumentando a reprodutibilidade das análises e minimizando variações decorrentes de interpretações individuais.</p>
+      <p>Dessa forma, a UltraKcalc consolida, em uma única plataforma, dados nutricionais quantitativos e informações estruturadas sobre o nível de processamento dos alimentos, possibilitando análises mais integradas e metodologicamente consistentes do consumo alimentar. Essa abordagem contribui para o avanço das avaliações dietéticas em contextos clínicos, acadêmicos e de saúde pública, ao oferecer uma ferramenta que articula rigor científico, padronização metodológica e aplicabilidade prática.</p>
+    </div>
+  </main>
+
+  <!-- Mobile Bottom Nav -->
+  <nav class="mobile-nav">
+    <a href="index.html">
+      <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"></path></svg>
+      Início
+    </a>
+    <a href="apresentacao.html" class="active">
+      <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2" ry="2"></rect><polygon points="10,8 16,12 10,16"></polygon><rect x="3" y="18" width="18" height="2"></rect></svg>
+      Sobre
+    </a>
+    <a href="calculadora.html">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><path d="M6 6h3v3H6zm5 0h3v3h-3zm5 0h3v3h-3zM6 11h3v3H6zm5 0h3v3h-3zm5 0h3v3h-3zM6 16h3v3H6zm5 0h3v3h-3zm5 0h3v3h-3z"/></svg>
+      Calc
+    </a>
+    <a href="citacao.html">
+      <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"></path></svg>
+      Citar
+    </a>
+  </nav>
+</body>
+</html>
