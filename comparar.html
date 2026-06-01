@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comparar - UltraKcalc</title>
+  <link rel="icon" type="image/png" href="69df2eb4-bfdc-4633-b414-444ce7a7c3c5.png" sizes="512x512">
+  <style>
+    :root {
+      --uk-primary: #017d6e;
+      --uk-primary-dark: #075e55;
+      --uk-secondary: #59b440;
+      --uk-soft: #eaf7ee;
+      --uk-bg: #f7f9fb;
+      --uk-line: #d7e5df;
+      --uk-text: #243635;
+      --uk-muted: #607473;
+      --uk-white: #ffffff;
+      --uk-warn: #d9564a;
+      --uk-shadow: 0 18px 44px rgba(31, 59, 55, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background:
+        linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.92)),
+        url('hero_background.png'),
+        var(--uk-bg);
+      background-size: cover;
+      background-position: center;
+      color: var(--uk-text);
+      font-family: Arial, sans-serif;
+    }
+
+    .topbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: linear-gradient(90deg, var(--uk-soft) 0%, var(--uk-bg) 100%);
+      color: var(--uk-primary);
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      z-index: 999;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .logo-link {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .logo-link img {
+      width: 40px;
+      height: 40px;
+      margin-right: 10px;
+    }
+
+    .logo-link span {
+      font-size: 1.3rem;
+      font-weight: bold;
+    }
+
+    .top-nav {
+      display: flex;
+      gap: 15px;
+      margin-left: 20px;
+      flex-wrap: wrap;
+    }
+
+    .top-nav a {
+      display: flex;
+      align-items: center;
+      color: var(--uk-primary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      padding: 6px 10px;
+      border-radius: 0.35rem;
+      transition: background-color 0.2s ease, color 0.2s ease;
+    }
+
+    .top-nav a.active,
+    .top-nav a:hover {
+      background-color: var(--uk-secondary);
+      color: var(--uk-white);
+    }
+
+    .top-nav a svg {
+      width: 16px;
+      height: 16px;
+      margin-right: 5px;
+      fill: currentColor;
+    }
+
+    .compare-shell {
+      min-height: 100vh;
+      padding: 112px 18px 40px;
+    }
+
+    .compare-page {
+      width: min(1180px, 100%);
+      margin: 0 auto;
+      display: grid;
+      gap: 18px;
+    }
+
+    .compare-header,
+    .compare-card {
+      border: 1px solid rgba(215, 229, 223, 0.9);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.97);
+      box-shadow: var(--uk-shadow);
+    }
+
+    .compare-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 24px;
+    }
+
+    .compare-header h1,
+    .compare-card h2,
+    .compare-panel h3 {
+      margin: 0;
+      color: var(--uk-primary-dark);
+    }
+
+    .compare-header h1 {
+      font-size: 30px;
+    }
+
+    .compare-header p {
+      max-width: 760px;
+      margin: 8px 0 0;
+      color: var(--uk-muted);
+      line-height: 1.45;
+    }
+
+    .compare-status {
+      min-width: 220px;
+      padding: 10px 12px;
+      border: 1px solid var(--uk-line);
+      border-radius: 8px;
+      background: var(--uk-bg);
+      color: var(--uk-primary-dark);
+      font-size: 12px;
+      font-weight: 800;
+      text-align: right;
+    }
+
+    .compare-card {
+      padding: 20px;
+    }
+
+    .compare-controls {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(240px, 1fr));
+      gap: 14px;
+    }
+
+    .compare-control-card,
+    .compare-mode-card {
+      display: grid;
+      gap: 10px;
+      padding: 14px;
+      border: 1px solid var(--uk-line);
+      border-radius: 8px;
+      background: #fbfdfc;
+    }
+
+    .compare-control-card h2,
+    .compare-mode-card h2 {
+      margin: 0;
+      color: var(--uk-primary-dark);
+      font-size: 16px;
+    }
+
+    .compare-field-grid {
+      display: grid;
+      grid-template-columns: minmax(120px, 0.7fr) minmax(180px, 1.3fr);
+      gap: 10px;
+    }
+
+    .compare-field {
+      display: grid;
+      gap: 5px;
+      min-width: 0;
+    }
+
+    label {
+      color: #435957;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    select {
+      width: 100%;
+      border: 1px solid #cfe0da;
+      border-radius: 6px;
+      padding: 10px 11px;
+      background: var(--uk-white);
+      color: var(--uk-text);
+      font-size: 14px;
+      outline: none;
+    }
+
+    select:focus {
+      border-color: var(--uk-primary);
+      box-shadow: 0 0 0 3px rgba(1, 125, 110, 0.12);
+    }
+
+    .compare-mode-card {
+      grid-column: 1 / -1;
+      grid-template-columns: minmax(220px, 1fr) auto;
+      align-items: end;
+    }
+
+    .compare-mode-card.is-disabled {
+      opacity: 0.7;
+    }
+
+    button {
+      min-height: 40px;
+      border: 0;
+      border-radius: 6px;
+      padding: 10px 16px;
+      background: var(--uk-primary);
+      color: var(--uk-white);
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    button:hover {
+      background: var(--uk-primary-dark);
+    }
+
+    button.secondary {
+      background: var(--uk-secondary);
+    }
+
+    button.secondary:hover {
+      background: #438f32;
+    }
+
+    button:disabled,
+    select:disabled {
+      cursor: not-allowed;
+      opacity: 0.58;
+    }
+
+    .compare-empty {
+      margin-top: 16px;
+      padding: 14px;
+      border: 1px dashed #bcd4cc;
+      border-radius: 8px;
+      background: #f6fbf9;
+      color: #48615e;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .compare-results[hidden] {
+      display: none;
+    }
+
+    .compare-results {
+      display: grid;
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .compare-summary-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(260px, 1fr));
+      gap: 14px;
+    }
+
+    .compare-side-panel {
+      display: grid;
+      gap: 14px;
+      align-content: start;
+    }
+
+    .compare-panel {
+      display: grid;
+      gap: 12px;
+      padding: 16px;
+      border: 1px solid var(--uk-line);
+      border-radius: 8px;
+      background: var(--uk-white);
+    }
+
+    .compare-panel h3 {
+      font-size: 18px;
+    }
+
+    .compare-meta {
+      color: var(--uk-muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .compare-metric-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .compare-metric {
+      display: grid;
+      grid-template-columns: minmax(120px, 1fr) auto;
+      gap: 8px 10px;
+      align-items: center;
+      padding: 10px;
+      border: 1px solid #e5efeb;
+      border-radius: 8px;
+      background: #fbfdfc;
+    }
+
+    .compare-metric-label {
+      color: #3d5451;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .compare-metric-value {
+      color: var(--uk-primary-dark);
+      font-size: 15px;
+      font-weight: 800;
+      text-align: right;
+    }
+
+    .compare-metric-detail {
+      grid-column: 1 / -1;
+      color: var(--uk-muted);
+      font-size: 12px;
+    }
+
+    .compare-side-charts,
+    .compare-chart-card {
+      display: grid;
+      gap: 12px;
+    }
+
+    .compare-chart-card {
+      padding: 16px;
+      border: 1px solid var(--uk-line);
+      border-radius: 8px;
+      background: var(--uk-white);
+    }
+
+    .compare-chart-card h2 {
+      margin: 0;
+      color: var(--uk-primary-dark);
+      font-size: 18px;
+    }
+
+    .compare-energy-layout {
+      display: grid;
+      grid-template-columns: minmax(150px, 0.8fr) minmax(180px, 1.2fr);
+      gap: 14px;
+      align-items: center;
+    }
+
+    .compare-energy-pie-wrap {
+      position: relative;
+      width: min(180px, 100%);
+      aspect-ratio: 1;
+      justify-self: center;
+    }
+
+    .compare-energy-pie {
+      width: 100%;
+      height: 100%;
+      border: 1px solid var(--uk-line);
+      border-radius: 999px;
+      background: #edf4f1;
+      box-shadow: inset 0 0 0 12px #ffffff;
+    }
+
+    .compare-energy-center {
+      position: absolute;
+      inset: 50%;
+      display: grid;
+      width: 74px;
+      height: 74px;
+      place-items: center;
+      transform: translate(-50%, -50%);
+      border-radius: 999px;
+      background: #ffffff;
+      color: var(--uk-primary-dark);
+      font-size: 13px;
+      font-weight: 800;
+      text-align: center;
+      box-shadow: 0 8px 20px rgba(31, 59, 55, 0.12);
+    }
+
+    .compare-chart-legend {
+      display: grid;
+      gap: 8px;
+      color: var(--uk-muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .legend-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: var(--uk-secondary);
+    }
+
+    .legend-dot.aup {
+      background: var(--uk-warn);
+    }
+
+    .compare-macro-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .compare-macro-heading {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      color: #3d5451;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .compare-macro-track {
+      display: flex;
+      height: 22px;
+      overflow: hidden;
+      border-radius: 6px;
+      background: #edf4f1;
+    }
+
+    .compare-macro-segment {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      min-width: 0;
+      height: 100%;
+      padding-right: 6px;
+      color: var(--uk-white);
+      font-size: 11px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .compare-macro-segment.naup {
+      background: var(--uk-secondary);
+    }
+
+    .compare-macro-segment.aup {
+      background: var(--uk-warn);
+    }
+
+    .compare-macro-detail {
+      color: var(--uk-muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    @media (max-width: 780px) {
+      .top-nav {
+        gap: 6px;
+        margin-left: 10px;
+      }
+
+      .top-nav a {
+        font-size: 0.8rem;
+        padding: 6px 8px;
+      }
+
+      .compare-header,
+      .compare-mode-card {
+        grid-template-columns: 1fr;
+      }
+
+      .compare-header {
+        display: grid;
+      }
+
+      .compare-status {
+        text-align: left;
+      }
+
+      .compare-controls,
+      .compare-summary-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .compare-field-grid,
+      .compare-energy-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .compare-shell {
+        padding-top: 132px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a href="index.html" class="logo-link">
+      <img src="new_logo.png" alt="UltraKcalc logo">
+      <span><span style="color:#59b440;">Ultra</span><span style="color:#017d6e;">Kcalc</span></span>
+    </a>
+    <nav class="top-nav">
+      <a href="apresentacao.html">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2" ry="2"></rect><polygon points="10,8 16,12 10,16"></polygon><rect x="3" y="18" width="18" height="2"></rect></svg>
+        Apresentacao
+      </a>
+      <a href="citacao.html">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"></path></svg>
+        Como citar
+      </a>
+      <a href="calculadora.html">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><rect x="6" y="6" width="3" height="3"></rect><rect x="11" y="6" width="3" height="3"></rect><rect x="16" y="6" width="3" height="3"></rect><rect x="6" y="11" width="3" height="3"></rect><rect x="11" y="11" width="3" height="3"></rect><rect x="16" y="11" width="3" height="3"></rect><rect x="6" y="16" width="3" height="3"></rect><rect x="11" y="16" width="3" height="3"></rect><rect x="16" y="16" width="3" height="3"></rect></svg>
+        Calculadora
+      </a>
+      <a href="conta.html">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path></svg>
+        Login
+      </a>
+      <a href="comparar.html" class="active">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19h16v2H4v-2zm1-8h4v6H5v-6zm5-6h4v12h-4V5zm5 3h4v9h-4V8z"></path></svg>
+        Comparar
+      </a>
+      <a href="https://drive.google.com/drive/folders/1x-SkAtpkdreA1mDAmxJscQdTvQw6Vept" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1 .9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6z"></path><polygon points="14,2 14,8 20,8"></polygon></svg>
+        Manual do usuário
+      </a>
+    </nav>
+  </header>
+
+  <main class="compare-shell">
+    <div class="compare-page">
+      <section class="compare-header">
+        <div>
+          <h1>Comparar recordatorios</h1>
+          <p>Analise energia e macronutrientes de AUP entre dois recordatorios, dois grupos ou um recordatorio contra um grupo.</p>
+        </div>
+        <div class="compare-status" id="compareDataStatus">Carregando dados</div>
+      </section>
+
+      <section class="compare-card">
+        <div class="compare-controls">
+          <div class="compare-control-card">
+            <h2>Comparar A</h2>
+            <div class="compare-field-grid">
+              <div class="compare-field">
+                <label for="compareTypeA">Tipo</label>
+                <select id="compareTypeA">
+                  <option value="record">Recordatorio</option>
+                  <option value="group">Grupo</option>
+                </select>
+              </div>
+              <div class="compare-field">
+                <label for="compareTargetA">Selecao</label>
+                <select id="compareTargetA"></select>
+              </div>
+            </div>
+          </div>
+
+          <div class="compare-control-card">
+            <h2>Comparar B</h2>
+            <div class="compare-field-grid">
+              <div class="compare-field">
+                <label for="compareTypeB">Tipo</label>
+                <select id="compareTypeB">
+                  <option value="record">Recordatorio</option>
+                  <option value="group">Grupo</option>
+                </select>
+              </div>
+              <div class="compare-field">
+                <label for="compareTargetB">Selecao</label>
+                <select id="compareTargetB"></select>
+              </div>
+            </div>
+          </div>
+
+          <div class="compare-mode-card" id="compareModeCard">
+            <div class="compare-field">
+              <label for="compareGroupMode">Modo de calculo para grupos</label>
+              <select id="compareGroupMode">
+                <option value="average">Media por recordatorio</option>
+                <option value="total">Soma total do grupo</option>
+              </select>
+            </div>
+            <button id="compareRunBtn" type="button">Comparar</button>
+          </div>
+        </div>
+
+        <div class="compare-empty" id="compareEmptyState">Nenhum resultado calculado.</div>
+
+        <div class="compare-results" id="compareResults" hidden>
+          <div class="compare-summary-grid">
+            <article class="compare-side-panel">
+              <div class="compare-panel" id="comparePanelA"></div>
+              <div class="compare-side-charts" id="compareChartsA"></div>
+            </article>
+            <article class="compare-side-panel">
+              <div class="compare-panel" id="comparePanelB"></div>
+              <div class="compare-side-charts" id="compareChartsB"></div>
+            </article>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase_config.js"></script>
+  <script src="ultrakcalc_cloud.js"></script>
+  <script src="comparar.js"></script>
+</body>
+</html>
