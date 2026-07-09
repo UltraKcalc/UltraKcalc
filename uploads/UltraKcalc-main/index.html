@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UltraKcalc – Página Inicial</title>
+  <link rel="icon" type="image/png" href="69df2eb4-bfdc-4633-b414-444ce7a7c3c5.png" sizes="512x512">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #F4F9F3;
+      color: #123530;
+      font-family: 'Manrope', Arial, sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    a { color: #017d6e; }
+    a:hover { color: #59b440; }
+
+    @keyframes ukFadeUp { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes ukGrowBar { from { width: 0; } }
+    @keyframes ukFloaty { 0%, 100% { transform: translateY(0) rotate(var(--rot, 0deg)); } 50% { transform: translateY(-14px) rotate(var(--rot, 0deg)); } }
+    @keyframes ukPopIn { from { opacity: 0; transform: scale(0.7); } to { opacity: 1; transform: scale(1); } }
+    @keyframes ukPulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(89,180,64,0.35); } 50% { box-shadow: 0 0 0 8px rgba(89,180,64,0); } }
+
+    /* ============ Abertura ============ */
+    .abertura {
+      position: relative;
+      overflow: hidden;
+      padding: 120px 24px 70px;
+      box-sizing: border-box;
+      background: linear-gradient(160deg, #F4F9F3 55%, #E4F4DE 100%);
+    }
+    .tecla {
+      position: absolute;
+      border-radius: 22px;
+      animation: ukFloaty 7s ease-in-out infinite;
+    }
+    .abertura-grid {
+      position: relative;
+      max-width: 1120px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: clamp(32px, 6vw, 72px);
+      align-items: center;
+    }
+    .abertura-texto { display: flex; flex-direction: column; align-items: flex-start; gap: 18px; }
+    .selo-uerj {
+      margin: 0;
+      font-size: 0.78rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+      color: #017d6e; background: #ffffff; border: 1px solid #CBE6C2;
+      padding: 7px 14px; border-radius: 999px;
+      animation: ukFadeUp 0.6s ease-out both;
+    }
+    .abertura h1 {
+      margin: 0;
+      font-family: 'Sora', sans-serif;
+      font-size: clamp(2.6rem, 6.5vw, 4.2rem);
+      font-weight: 800; line-height: 1.08;
+      animation: ukFadeUp 0.6s ease-out 0.1s both;
+    }
+    .abertura-sub {
+      margin: 0; max-width: 480px;
+      font-size: clamp(1.1rem, 2.4vw, 1.3rem); line-height: 1.55; font-weight: 600; color: #123530;
+      text-wrap: pretty;
+      animation: ukFadeUp 0.6s ease-out 0.2s both;
+    }
+    .abertura-desc {
+      margin: 0; max-width: 480px;
+      font-size: 1rem; line-height: 1.6; color: #40584F;
+      text-wrap: pretty;
+      animation: ukFadeUp 0.6s ease-out 0.25s both;
+    }
+    .verde { color: #59b440; }
+    .teal { color: #017d6e; }
+    .abertura-ctas { display: flex; gap: 14px; flex-wrap: wrap; animation: ukFadeUp 0.6s ease-out 0.3s both; }
+    .btn-principal {
+      text-decoration: none; background: #59b440; color: #ffffff; font-weight: 700; font-size: 1.05rem;
+      padding: 15px 32px; border-radius: 999px;
+      animation: ukPulse 2.4s ease-in-out infinite;
+      transition: background-color 0.2s ease;
+    }
+    .btn-principal:hover { background: #017d6e; color: #ffffff; }
+    .btn-secundario {
+      text-decoration: none; background: transparent; color: #017d6e; font-weight: 700; font-size: 1.05rem;
+      padding: 15px 28px; border-radius: 999px; border: 1.5px solid #017d6e;
+      transition: background-color 0.2s ease, color 0.2s ease;
+    }
+    .btn-secundario:hover { background: #017d6e; color: #ffffff; }
+    .abertura-patente { margin: 8px 0 0; font-size: 0.85rem; color: #5E7A6E; animation: ukFadeUp 0.6s ease-out 0.4s both; }
+    .abertura-patente a { color: #017d6e; font-weight: 600; }
+
+    /* ============ Card de demonstração ============ */
+    .demo-wrap { position: relative; animation: ukFadeUp 0.7s ease-out 0.25s both; }
+    .demo-tecla-a {
+      position: absolute; top: -18px; right: -14px; width: 74px; height: 74px; border-radius: 20px;
+      background: #59b440; --rot: 12deg; animation: ukFloaty 6s ease-in-out infinite;
+      box-shadow: 0 14px 30px rgba(89,180,64,0.35);
+    }
+    .demo-tecla-b {
+      position: absolute; bottom: -20px; left: -16px; width: 52px; height: 52px; border-radius: 14px;
+      background: #017d6e; --rot: -10deg; animation: ukFloaty 7.5s ease-in-out infinite 0.8s;
+      box-shadow: 0 14px 30px rgba(1,125,110,0.3);
+    }
+    .demo-card {
+      position: relative; background: #ffffff; border-radius: 22px;
+      box-shadow: 0 24px 60px rgba(18,53,48,0.16);
+      padding: 26px 26px 22px; box-sizing: border-box;
+    }
+    .demo-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
+    .demo-head .titulo { font-family: 'Sora', sans-serif; font-size: 0.9rem; font-weight: 600; color: #40584F; }
+    .demo-head .tag-tbca {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+      color: #ffffff; background: #017d6e; padding: 4px 10px; border-radius: 999px;
+    }
+    .demo-kcal { display: flex; align-items: baseline; gap: 8px; margin-bottom: 20px; }
+    .demo-kcal .valor {
+      font-family: 'Sora', sans-serif; font-size: clamp(2.4rem, 5vw, 3.2rem); font-weight: 800;
+      color: #017d6e; font-variant-numeric: tabular-nums;
+    }
+    .demo-kcal .unidade { font-size: 1rem; font-weight: 700; color: #59b440; }
+    .demo-kcal .contexto { font-size: 0.85rem; color: #5E7A6E; margin-left: auto; }
+    .demo-barras { display: flex; flex-direction: column; gap: 13px; margin-bottom: 20px; }
+    .demo-linha { display: grid; grid-template-columns: 92px 1fr 48px; align-items: center; gap: 10px; }
+    .demo-linha .rotulo { font-size: 0.85rem; font-weight: 600; color: #40584F; }
+    .demo-linha .trilha { height: 10px; background: #EEF6EA; border-radius: 999px; overflow: hidden; }
+    .demo-linha .barra { height: 100%; border-radius: 999px; animation: ukGrowBar 1.2s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+    .barra-verde { background: linear-gradient(90deg, #59b440, #7BC95E); }
+    .barra-teal { background: linear-gradient(90deg, #017d6e, #2A9E8B); }
+    .demo-linha .quantia { font-size: 0.82rem; font-weight: 700; color: #123530; text-align: right; }
+    .demo-classif { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; border-top: 1px solid #EEF6EA; padding-top: 16px; }
+    .demo-classif .legenda { font-size: 0.78rem; font-weight: 700; color: #5E7A6E; margin-right: 4px; }
+    .chip {
+      font-size: 0.8rem; font-weight: 700; color: #40584F; background: #EEF6EA;
+      padding: 5px 12px; border-radius: 999px; animation: ukPopIn 0.4s ease-out both;
+    }
+    .chip-destaque { color: #ffffff; font-weight: 800; background: linear-gradient(90deg, #59b440, #017d6e); }
+
+    /* ============ Faixa "O que é" ============ */
+    .faixa-teal {
+      padding: clamp(52px, 8vw, 96px) 24px;
+      box-sizing: border-box;
+      background: linear-gradient(150deg, #016557 0%, #017d6e 60%, #0b9077 100%);
+      position: relative; overflow: hidden;
+    }
+    .faixa-teal .decorativo {
+      position: absolute; top: -60px; right: -60px; width: 240px; height: 240px;
+      border-radius: 56px; background: rgba(89,180,64,0.16); transform: rotate(14deg);
+    }
+    .faixa-conteudo { position: relative; max-width: 1080px; margin: 0 auto; display: flex; flex-direction: column; gap: 36px; }
+    .faixa-teal h2 { margin: 0 0 14px; font-family: 'Sora', sans-serif; font-size: clamp(1.6rem, 4vw, 2.2rem); color: #ffffff; }
+    .faixa-teal .intro { margin: 0; max-width: 680px; font-size: 1.05rem; line-height: 1.7; color: #CFEADF; text-wrap: pretty; }
+    .pilares { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 18px; }
+    .pilar {
+      background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.16);
+      border-radius: 18px; padding: 26px 24px;
+      -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
+    }
+    .pilar .icone {
+      width: 44px; height: 44px; border-radius: 13px; background: #59b440;
+      display: flex; align-items: center; justify-content: center; margin-bottom: 16px;
+    }
+    .pilar .icone svg { width: 22px; height: 22px; fill: #ffffff; }
+    .pilar h3 { margin: 0 0 8px; font-family: 'Sora', sans-serif; font-size: 1.1rem; color: #ffffff; }
+    .pilar p { margin: 0; font-size: 0.95rem; line-height: 1.6; color: #CFEADF; }
+
+    /* ============ Atalhos ============ */
+    .atalhos { padding: clamp(52px, 8vw, 96px) 24px; box-sizing: border-box; background: #F4F9F3; }
+    .atalhos-conteudo { max-width: 1080px; margin: 0 auto; }
+    .atalhos h2 { margin: 0 0 26px; font-family: 'Sora', sans-serif; font-size: clamp(1.5rem, 4vw, 2rem); color: #123530; }
+    .atalhos-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; }
+    .atalho {
+      text-decoration: none; border-radius: 18px; padding: 26px 24px;
+      display: flex; flex-direction: column; gap: 10px; min-height: 130px; box-sizing: border-box;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .atalho:hover { transform: translateY(-4px); }
+    .atalho svg { width: 26px; height: 26px; }
+    .atalho .nome { font-family: 'Sora', sans-serif; font-size: 1.1rem; font-weight: 600; }
+    .atalho .info { font-size: 0.9rem; line-height: 1.5; }
+    .atalho-verde { background: linear-gradient(135deg, #59b440, #3d9430); }
+    .atalho-verde .nome { color: #ffffff; }
+    .atalho-verde .info { color: #E4F4DE; }
+    .atalho-teal { background: linear-gradient(135deg, #017d6e, #015f53); }
+    .atalho-teal .nome { color: #ffffff; }
+    .atalho-teal .info { color: #CFEADF; }
+    .atalho-claro { background: #ffffff; border: 1px solid #DFEDDD; }
+    .atalho-claro .nome { color: #123530; }
+    .atalho-claro .info { color: #5E7A6E; }
+    .atalho-claro:hover { border-color: #59b440; box-shadow: 0 10px 26px rgba(18,53,48,0.1); }
+
+    /* ============ Rodapé ============ */
+    .rodape { background: #0A322C; color: #C9DED4; padding: clamp(44px, 7vw, 70px) 24px 32px; box-sizing: border-box; }
+    .rodape-conteudo { max-width: 1080px; margin: 0 auto; display: flex; flex-direction: column; gap: 32px; }
+    .rodape-colunas { display: flex; flex-wrap: wrap; gap: 36px; justify-content: space-between; }
+    .rodape-marca { flex: 1 1 340px; min-width: 260px; }
+    .rodape-marca .logo-linha { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+    .rodape-marca img { width: 34px; height: 34px; }
+    .rodape-marca .nome { font-family: 'Sora', sans-serif; font-size: 1.1rem; font-weight: 700; }
+    .rodape-marca .nome .k { color: #6FCDB9; }
+    .rodape-marca p { margin: 0 0 18px; font-size: 0.9rem; line-height: 1.65; color: #9DBCAF; }
+    .rodape-marca .patente { margin: 0; font-size: 0.85rem; color: #9DBCAF; }
+    .rodape a { color: #8FD473; }
+    .rodape a:hover { color: #ffffff; }
+    .rodape-citacao {
+      flex: 1 1 380px; min-width: 260px;
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 14px; padding: 22px 24px;
+    }
+    .rodape-citacao h3 {
+      margin: 0 0 10px; font-family: 'Sora', sans-serif; font-size: 0.95rem; color: #ffffff;
+      letter-spacing: 0.04em; text-transform: uppercase;
+    }
+    .rodape-citacao p { margin: 0 0 14px; font-size: 0.88rem; line-height: 1.7; color: #C9DED4; }
+    .rodape-citacao a { font-size: 0.88rem; font-weight: 700; text-decoration: none; }
+    .rodape-citacao a:hover { text-decoration: underline; }
+    .rodape-base {
+      border-top: 1px solid rgba(255,255,255,0.12); padding-top: 20px;
+      display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: center; justify-content: space-between;
+    }
+    .rodape-base .copy { font-size: 0.8rem; color: #7FA396; }
+    .rodape-base nav { display: flex; gap: 18px; flex-wrap: wrap; }
+    .rodape-base nav a { font-size: 0.8rem; color: #9DBCAF; text-decoration: none; }
+    .rodape-base nav a:hover { color: #ffffff; }
+
+    /* Revelação ao rolar */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.visivel { opacity: 1; transform: translateY(0); }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+      .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+  <link rel="stylesheet" href="ultrakcalc_topbar.css">
+</head>
+<body>
+  <!-- Barra superior compartilhada (preenchida por ultrakcalc_topbar.js) -->
+  <header class="topbar"></header>
+
+  <!-- ============ Abertura ============ -->
+  <section class="abertura">
+    <div class="tecla" aria-hidden="true" style="top:12%; left:-30px; width:90px; height:90px; background:#59b440; opacity:0.12; --rot:-12deg;"></div>
+    <div class="tecla" aria-hidden="true" style="bottom:8%; left:12%; width:56px; height:56px; border-radius:16px; background:#017d6e; opacity:0.12; --rot:18deg; animation-duration:9s; animation-delay:1s;"></div>
+    <div class="tecla" aria-hidden="true" style="top:18%; right:6%; width:70px; height:70px; border-radius:18px; background:#017d6e; opacity:0.1; --rot:10deg; animation-duration:8s; animation-delay:0.5s;"></div>
+
+    <div class="abertura-grid">
+      <div class="abertura-texto">
+        <p class="selo-uerj">Instituto de Nutrição · UERJ</p>
+        <h1><span class="verde">Ultra</span><span class="teal">Kcalc</span></h1>
+        <p class="abertura-sub">Quantifique <span class="verde">energia e nutrientes</span> de alimentos <span class="teal">ultraprocessados</span></p>
+        <p class="abertura-desc">Base TBCA, classificação assistida por inteligência artificial e resultados prontos para a sua pesquisa.</p>
+        <div class="abertura-ctas">
+          <a href="calculadora.html" class="btn-principal">Usar a calculadora</a>
+          <a href="apresentacao.html" class="btn-secundario">Conheça a ferramenta</a>
+        </div>
+        <p class="abertura-patente">Programa registrado · <a href="https://revistas.inpi.gov.br/pdf/Programa_de_computador2863.pdf" target="_blank" rel="noopener noreferrer">BR 51 2025 005845-4</a></p>
+      </div>
+
+      <!-- Demonstração animada -->
+      <div class="demo-wrap">
+        <div class="demo-tecla-a" aria-hidden="true"></div>
+        <div class="demo-tecla-b" aria-hidden="true"></div>
+        <div class="demo-card">
+          <div class="demo-head">
+            <span class="titulo">Recordatório · exemplo</span>
+            <span class="tag-tbca">TBCA</span>
+          </div>
+          <div class="demo-kcal">
+            <span class="valor" id="kcalContador">0</span>
+            <span class="unidade">kcal</span>
+            <span class="contexto">de ultraprocessados</span>
+          </div>
+          <div class="demo-barras">
+            <div class="demo-linha">
+              <span class="rotulo">Carboidratos</span>
+              <div class="trilha"><div class="barra barra-verde" style="width:78%; animation-delay:0.5s;"></div></div>
+              <span class="quantia">211 g</span>
+            </div>
+            <div class="demo-linha">
+              <span class="rotulo">Proteínas</span>
+              <div class="trilha"><div class="barra barra-teal" style="width:38%; animation-delay:0.65s;"></div></div>
+              <span class="quantia">46 g</span>
+            </div>
+            <div class="demo-linha">
+              <span class="rotulo">Lipídios</span>
+              <div class="trilha"><div class="barra barra-verde" style="width:55%; animation-delay:0.8s;"></div></div>
+              <span class="quantia">68 g</span>
+            </div>
+            <div class="demo-linha">
+              <span class="rotulo">Sódio</span>
+              <div class="trilha"><div class="barra barra-teal" style="width:64%; animation-delay:0.95s;"></div></div>
+              <span class="quantia">1,9 g</span>
+            </div>
+          </div>
+          <div class="demo-classif">
+            <span class="legenda">Classificação</span>
+            <span class="chip chip-destaque" style="animation-delay:1.1s;">Ultraprocessados · 59%</span>
+            <span class="chip" style="animation-delay:1.25s;">Não ultraprocessados · 41%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ O que é ============ -->
+  <section class="faixa-teal">
+    <div class="decorativo" aria-hidden="true"></div>
+    <div class="faixa-conteudo">
+      <div class="reveal">
+        <h2>O que é a UltraKcalc?</h2>
+        <p class="intro">Ferramenta científica desenvolvida no Instituto de Nutrição da UERJ para padronizar a avaliação do consumo de alimentos ultraprocessados — dados nutricionais quantitativos e nível de processamento em uma única plataforma.</p>
+      </div>
+      <div class="pilares">
+        <div class="pilar reveal">
+          <div class="icone"><svg viewBox="0 0 24 24"><path d="M4 19h16v2H4v-2zm1-8h4v6H5v-6zm5-6h4v12h-4V5zm5 3h4v9h-4V8z"></path></svg></div>
+          <h3>Base de dados TBCA</h3>
+          <p>Energia, macro e micronutrientes calculados a partir da Tabela Brasileira de Composição de Alimentos.</p>
+        </div>
+        <div class="pilar reveal">
+          <div class="icone"><svg viewBox="0 0 24 24"><path d="M12 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.5-4.8 2.5.9-5.4L4.2 7.7l5.4-.8L12 2z"></path></svg></div>
+          <h3>Classificação com IA</h3>
+          <p>Alimentos classificados como ultraprocessados ou não ultraprocessados com apoio de modelos de linguagem, validado em estudo científico.</p>
+        </div>
+        <div class="pilar reveal">
+          <div class="icone"><svg viewBox="0 0 24 24"><path d="M12 2L4 5v6c0 5 3.4 9.7 8 11 4.6-1.3 8-6 8-11V5l-8-3z"></path></svg></div>
+          <h3>Evidência e registro</h3>
+          <p>Fundamentada em artigo científico publicado e registrada como programa de computador no INPI.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Atalhos ============ -->
+  <section class="atalhos">
+    <div class="atalhos-conteudo">
+      <h2 class="reveal">Comece por aqui</h2>
+      <div class="atalhos-grid">
+        <a class="atalho atalho-verde reveal" href="calculadora.html">
+          <svg viewBox="0 0 24 24" fill="#DFF3D5"><rect x="3" y="3" width="18" height="18" rx="2"></rect><rect x="6" y="6" width="3" height="3" fill="#3d9430"></rect><rect x="11" y="6" width="3" height="3" fill="#3d9430"></rect><rect x="16" y="6" width="3" height="3" fill="#3d9430"></rect><rect x="6" y="11" width="3" height="3" fill="#3d9430"></rect><rect x="11" y="11" width="3" height="3" fill="#3d9430"></rect><rect x="16" y="11" width="3" height="3" fill="#3d9430"></rect><rect x="6" y="16" width="3" height="3" fill="#3d9430"></rect><rect x="11" y="16" width="3" height="3" fill="#3d9430"></rect><rect x="16" y="16" width="3" height="3" fill="#3d9430"></rect></svg>
+          <span class="nome">Calculadora</span>
+          <span class="info">Monte recordatórios e calcule energia e nutrientes.</span>
+        </a>
+        <a class="atalho atalho-teal reveal" href="comparar.html">
+          <svg viewBox="0 0 24 24" fill="#A9DED2"><path d="M4 19h16v2H4v-2zm1-8h4v6H5v-6zm5-6h4v12h-4V5zm5 3h4v9h-4V8z"></path></svg>
+          <span class="nome">Comparar</span>
+          <span class="info">Compare resultados entre registros e grupos.</span>
+        </a>
+        <a class="atalho atalho-claro reveal" href="apresentacao.html">
+          <svg viewBox="0 0 24 24" fill="#59b440"><rect x="3" y="4" width="18" height="12" rx="2"></rect><polygon points="10,8 16,12 10,16" fill="#ffffff"></polygon><rect x="3" y="18" width="18" height="2"></rect></svg>
+          <span class="nome">Apresentação</span>
+          <span class="info">Entenda a metodologia e a origem da ferramenta.</span>
+        </a>
+        <a class="atalho atalho-claro reveal" href="citacao.html">
+          <svg viewBox="0 0 24 24" fill="#017d6e"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"></path></svg>
+          <span class="nome">Como citar</span>
+          <span class="info">Referência oficial para trabalhos acadêmicos.</span>
+        </a>
+        <a class="atalho atalho-claro reveal" href="conta.html">
+          <svg viewBox="0 0 24 24" fill="#59b440"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path></svg>
+          <span class="nome">Minha conta</span>
+          <span class="info">Entre para salvar e sincronizar seus registros.</span>
+        </a>
+        <a class="atalho atalho-claro reveal" href="manual.html">
+          <svg viewBox="0 0 24 24" fill="#017d6e"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6z"></path><polygon points="14,2 14,8 20,8" fill="#A9DED2"></polygon></svg>
+          <span class="nome">Manual do usuário</span>
+          <span class="info">Guia passo a passo de todas as funções.</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Rodapé ============ -->
+  <footer class="rodape">
+    <div class="rodape-conteudo">
+      <div class="rodape-colunas">
+        <div class="rodape-marca">
+          <div class="logo-linha">
+            <img src="new_logo.png" alt="UltraKcalc logo">
+            <span class="nome"><span class="verde">Ultra</span><span class="k">Kcalc</span></span>
+          </div>
+          <p>Ultra-Processed Food Energy and Nutrients Calculator. Desenvolvida no Instituto de Nutrição da Universidade do Estado do Rio de Janeiro (UERJ).</p>
+          <p class="patente">Patente <a href="https://revistas.inpi.gov.br/pdf/Programa_de_computador2863.pdf" target="_blank" rel="noopener noreferrer">BR 51 2025 005845-4</a></p>
+          <p class="patente" style="margin-top: 8px;">Contato: <a href="mailto:ultrakcalc@uerj.br">ultrakcalc@uerj.br</a></p>
+        </div>
+        <div class="rodape-citacao">
+          <h3>Como citar</h3>
+          <p>OLASAGASTI, F.; COELHO, G. M. O.; KOURY, J. C.; CATTEM, M. V. O. <em>Ultra-Processed Food Energy and Nutrients Calculator (UltraKcalc)</em>. Instituto de Nutrição, Universidade do Estado do Rio de Janeiro.</p>
+          <a href="citacao.html">Ver referência completa →</a>
+        </div>
+      </div>
+      <div class="rodape-base">
+        <span class="copy">© 2026 UltraKcalc · Instituto de Nutrição · UERJ</span>
+        <nav>
+          <a href="apresentacao.html">Apresentação</a>
+          <a href="citacao.html">Como citar</a>
+          <a href="calculadora.html">Calculadora</a>
+          <a href="comparar.html">Comparar</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <script src="ultrakcalc_topbar.js" defer></script>
+  <script>
+    // Contador de kcal animado
+    (function () {
+      var el = document.getElementById('kcalContador');
+      var alvo = 1847, dur = 1600, t0 = null;
+      function passo(t) {
+        if (t0 === null) t0 = t;
+        var p = Math.min((t - t0) / dur, 1);
+        var suave = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(alvo * suave).toLocaleString('pt-BR');
+        if (p < 1) requestAnimationFrame(passo);
+      }
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        el.textContent = alvo.toLocaleString('pt-BR');
+      } else {
+        requestAnimationFrame(passo);
+      }
+    })();
+
+    // Revelação ao rolar
+    (function () {
+      var els = document.querySelectorAll('.reveal');
+      if (!('IntersectionObserver' in window)) {
+        els.forEach(function (el) { el.classList.add('visivel'); });
+        return;
+      }
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) {
+            e.target.classList.add('visivel');
+            io.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.15 });
+      els.forEach(function (el, i) {
+        el.style.transitionDelay = (i % 3) * 0.12 + 's';
+        io.observe(el);
+      });
+    })();
+  </script>
+  <script src="ultrakcalc_i18n.js" defer></script>
+</body>
+</html>

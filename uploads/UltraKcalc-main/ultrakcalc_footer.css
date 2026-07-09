@@ -1,0 +1,62 @@
+/* UltraKcalc — Rodapé compartilhado.
+   Incluir: <link rel="stylesheet" href="ultrakcalc_footer.css">
+            <script src="ultrakcalc_footer.js" defer></script>
+   e um <footer class="uk-rodape"></footer> no fim do body (o JS cria se faltar). */
+
+footer.uk-rodape {
+  background: #0A322C;
+  color: #C9DED4;
+  padding: clamp(44px, 7vw, 70px) 24px 32px;
+  box-sizing: border-box;
+  font-family: 'Manrope', Arial, sans-serif;
+  line-height: 1.6;
+}
+footer.uk-rodape * { box-sizing: border-box; }
+footer.uk-rodape .uk-rodape-conteudo { max-width: 1080px; margin: 0 auto; display: flex; flex-direction: column; gap: 32px; }
+footer.uk-rodape .uk-rodape-colunas { display: flex; flex-wrap: wrap; gap: 36px; justify-content: space-between; }
+footer.uk-rodape .uk-rodape-marca { flex: 1 1 340px; min-width: 260px; }
+footer.uk-rodape .uk-logo-linha { display: flex; align-items: center; gap: 10px; margin: 0 0 14px; }
+footer.uk-rodape .uk-logo-linha img { width: 34px; height: 34px; display: block; }
+footer.uk-rodape .uk-logo-linha .uk-nome { font-family: 'Sora', sans-serif; font-size: 1.1rem; font-weight: 700; }
+footer.uk-rodape .uk-nome .uk-g { color: #59b440; }
+footer.uk-rodape .uk-nome .uk-k { color: #6FCDB9; }
+footer.uk-rodape .uk-rodape-marca p { margin: 0 0 18px; font-size: 0.9rem; line-height: 1.65; color: #9DBCAF; }
+footer.uk-rodape .uk-patente { margin: 0; font-size: 0.85rem; color: #9DBCAF; }
+footer.uk-rodape .uk-contato { margin: 8px 0 0; font-size: 0.85rem; color: #9DBCAF; }
+footer.uk-rodape a { color: #8FD473; }
+footer.uk-rodape a:hover { color: #ffffff; }
+footer.uk-rodape .uk-rodape-citacao {
+  flex: 1 1 380px; min-width: 260px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  padding: 22px 24px;
+}
+footer.uk-rodape .uk-rodape-citacao h3 {
+  margin: 0 0 10px;
+  font-family: 'Sora', sans-serif;
+  font-size: 0.95rem;
+  color: #ffffff;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border: 0; padding: 0; text-align: left;
+}
+footer.uk-rodape .uk-rodape-citacao h3::after { display: none; }
+footer.uk-rodape .uk-rodape-citacao p { margin: 0 0 14px; font-size: 0.88rem; line-height: 1.7; color: #C9DED4; }
+footer.uk-rodape .uk-rodape-citacao a { font-size: 0.88rem; font-weight: 700; text-decoration: none; }
+footer.uk-rodape .uk-rodape-citacao a:hover { text-decoration: underline; }
+footer.uk-rodape .uk-rodape-base {
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  padding-top: 20px;
+  display: flex; flex-wrap: wrap; gap: 12px 24px;
+  align-items: center; justify-content: space-between;
+}
+footer.uk-rodape .uk-copy { font-size: 0.8rem; color: #7FA396; }
+footer.uk-rodape .uk-rodape-base nav { display: flex; gap: 18px; flex-wrap: wrap; margin: 0; }
+footer.uk-rodape .uk-rodape-base nav a { font-size: 0.8rem; color: #9DBCAF; text-decoration: none; }
+footer.uk-rodape .uk-rodape-base nav a:hover { color: #ffffff; }
+
+/* Espaço para a barra inferior mobile fixa (quando existir) */
+@media (max-width: 768px) {
+  footer.uk-rodape { padding-bottom: 96px; }
+}

@@ -1,0 +1,79 @@
+/* ============================================================
+   UltraKcalc — Barra superior compartilhada
+   Incluir em todas as páginas, DEPOIS do <style> da página:
+   <link rel="stylesheet" href="ultrakcalc_topbar.css">
+   <script src="ultrakcalc_topbar.js" defer></script>
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Manrope:wght@400;500;600;700&display=swap');
+
+header.topbar {
+  position: fixed !important;
+  top: 0; left: 0; right: 0;
+  width: 100% !important;
+  box-sizing: border-box;
+  z-index: 999;
+  background: #ffffff !important;
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid #DFEDDD;
+  box-shadow: none !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between !important;
+  gap: 16px;
+  padding: 10px 20px !important;
+  font-family: 'Manrope', Arial, sans-serif;
+}
+
+header.topbar .uk-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+header.topbar .uk-logo img { width: 38px; height: 38px; display: block; margin: 0; }
+header.topbar .uk-logo span { font-family: 'Sora', sans-serif; font-size: 1.15rem; font-weight: 700; }
+.uk-g { color: #59b440; }
+.uk-t { color: #017d6e; }
+
+header.topbar .uk-nav { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; margin: 0; }
+header.topbar .uk-nav a {
+  text-decoration: none; color: #123530; font-size: 0.9rem; font-weight: 600;
+  padding: 8px 12px; border-radius: 8px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+header.topbar .uk-nav a:hover,
+header.topbar .uk-nav a.uk-active { background: #E4F4DE; color: #017d6e; }
+header.topbar .uk-nav a.uk-outline {
+  color: #017d6e; font-weight: 700; padding: 8px 14px;
+  border-radius: 999px; border: 1.5px solid #017d6e; background: transparent;
+}
+header.topbar .uk-nav a.uk-outline:hover { background: #017d6e; color: #ffffff; }
+header.topbar .uk-nav a.uk-cta {
+  color: #ffffff; font-weight: 700; padding: 9px 16px;
+  border-radius: 999px; background: #59b440;
+}
+header.topbar .uk-nav a.uk-cta:hover { background: #017d6e; color: #ffffff; }
+
+/* Botão hambúrguer (mobile) */
+.uk-burger {
+  display: none; flex-direction: column; gap: 5px;
+  background: none; border: none; cursor: pointer; padding: 12px;
+}
+.uk-burger span { display: block; width: 22px; height: 2.5px; border-radius: 2px; background: #017d6e; }
+.uk-burger span:nth-child(2) { background: #59b440; }
+
+/* Menu suspenso (mobile) */
+nav.uk-menu {
+  display: none; position: fixed; top: 59px; left: 0; right: 0; z-index: 998;
+  background: #ffffff; border-bottom: 1px solid #DFEDDD;
+  box-shadow: 0 12px 30px rgba(18, 53, 48, 0.12);
+  flex-direction: column; padding: 8px 12px 16px;
+  font-family: 'Manrope', Arial, sans-serif;
+}
+nav.uk-menu.uk-open { display: flex; }
+nav.uk-menu a { text-decoration: none; color: #123530; font-weight: 600; font-size: 1rem; padding: 14px 16px; border-radius: 10px; }
+nav.uk-menu a:hover { background: #E4F4DE; }
+nav.uk-menu a.uk-cta { color: #ffffff; background: #59b440; font-weight: 700; border-radius: 12px; margin: 8px 4px; text-align: center; }
+nav.uk-menu a.uk-cta:hover { background: #017d6e; }
+nav.uk-menu a.uk-outline { color: #017d6e; font-weight: 700; }
+
+@media (max-width: 880px) {
+  header.topbar .uk-nav { display: none; }
+  .uk-burger { display: flex; }
+}
