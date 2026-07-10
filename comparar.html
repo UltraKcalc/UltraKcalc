@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comparar - UltraKcalc</title>
+  <link rel="icon" type="image/png" href="69df2eb4-bfdc-4633-b414-444ce7a7c3c5.png" sizes="512x512">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --uk-primary: #017d6e;
+      --uk-primary-dark: #075e55;
+      --uk-secondary: #59b440;
+      --uk-soft: #E4F4DE;
+      --uk-bg: #F4F9F3;
+      --uk-line: #DFEDDD;
+      --uk-text: #123530;
+      --uk-muted: #5E7A6E;
+      --uk-white: #ffffff;
+      --uk-warn: #d9564a;
+      --uk-shadow: 0 10px 30px rgba(18, 53, 48, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: linear-gradient(160deg, #F4F9F3 55%, #E4F4DE 100%);
+      color: var(--uk-text);
+      font-family: 'Manrope', Arial, sans-serif;
+    }
+
+    h1, h2, h3 {
+      font-family: 'Sora', sans-serif;
+    }
+
+    a { color: var(--uk-primary); }
+    a:hover { color: var(--uk-secondary); }
+
+    @keyframes ukFadeUp {
+      from { opacity: 0; transform: translateY(22px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .compare-shell {
+      min-height: 100vh;
+      padding: 112px 18px 48px;
+    }
+
+    .compare-page {
+      width: min(1180px, 100%);
+      margin: 0 auto;
+      display: grid;
+      gap: 18px;
+    }
+
+    .compare-header,
+    .compare-card {
+      border: 1px solid var(--uk-line);
+      border-radius: 18px;
+      background: var(--uk-white);
+      box-shadow: var(--uk-shadow);
+      animation: ukFadeUp 0.5s ease-out both;
+    }
+
+    .compare-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 26px 28px;
+    }
+
+    .compare-header h1,
+    .compare-card h2,
+    .compare-panel h3 {
+      margin: 0;
+      color: var(--uk-text);
+    }
+
+    .compare-header h1 {
+      font-size: clamp(1.5rem, 3.4vw, 1.9rem);
+      font-weight: 700;
+    }
+
+    .compare-header p {
+      max-width: 760px;
+      margin: 8px 0 0;
+      color: var(--uk-muted);
+      line-height: 1.55;
+    }
+
+    .compare-status {
+      min-width: 220px;
+      padding: 11px 14px;
+      border: 1px solid var(--uk-line);
+      border-radius: 12px;
+      background: var(--uk-bg);
+      color: var(--uk-primary-dark);
+      font-size: 12px;
+      font-weight: 700;
+      text-align: right;
+    }
+
+    .compare-card {
+      padding: 22px;
+      animation-delay: 0.08s;
+    }
+
+    .compare-controls {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(240px, 1fr));
+      gap: 14px;
+    }
+
+    .compare-control-card,
+    .compare-mode-card {
+      display: grid;
+      gap: 10px;
+      padding: 16px;
+      border: 1px solid var(--uk-line);
+      border-radius: 14px;
+      background: var(--uk-bg);
+    }
+
+    .compare-control-card h2,
+    .compare-mode-card h2 {
+      margin: 0;
+      color: var(--uk-primary);
+      font-size: 15px;
+    }
+
+    .compare-field-grid {
+      display: grid;
+      grid-template-columns: minmax(120px, 0.7fr) minmax(180px, 1.3fr);
+      gap: 10px;
+    }
+
+    .compare-field {
+      display: grid;
+      gap: 5px;
+      min-width: 0;
+    }
+
+    label {
+      color: #40584F;
+      font-size: 11.5px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    select {
+      width: 100%;
+      border: 1.5px solid var(--uk-line);
+      border-radius: 10px;
+      padding: 11px 12px;
+      background: var(--uk-white);
+      color: var(--uk-text);
+      font-size: 14px;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    select:focus {
+      border-color: var(--uk-primary);
+      box-shadow: 0 0 0 3px rgba(1, 125, 110, 0.12);
+    }
+
+    .compare-mode-card {
+      grid-column: 1 / -1;
+      grid-template-columns: minmax(220px, 1fr) auto;
+      align-items: end;
+    }
+
+    .compare-mode-card.is-disabled {
+      opacity: 0.7;
+    }
+
+    button {
+      min-height: 44px;
+      border: 0;
+      border-radius: 999px;
+      padding: 11px 22px;
+      background: var(--uk-secondary);
+      color: var(--uk-white);
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 700;
+      transition: background-color 0.2s ease;
+    }
+
+    button:hover {
+      background: var(--uk-primary);
+    }
+
+    button.secondary {
+      background: transparent;
+      color: var(--uk-primary);
+      box-shadow: inset 0 0 0 1.5px var(--uk-primary);
+    }
+
+    button.secondary:hover {
+      background: var(--uk-primary);
+      color: var(--uk-white);
+    }
+
+    button:disabled,
+    select:disabled {
+      cursor: not-allowed;
+      opacity: 0.58;
+    }
+
+    .compare-empty {
+      margin-top: 16px;
+      padding: 16px;
+      border: 1.5px dashed #BCD4CC;
+      border-radius: 14px;
+      background: var(--uk-bg);
+      color: var(--uk-muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .compare-results[hidden] {
+      display: none;
+    }
+
+    .compare-results {
+      display: grid;
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .compare-summary-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(260px, 1fr));
+      gap: 14px;
+    }
+
+    .compare-side-panel {
+      display: grid;
+      gap: 14px;
+      align-content: start;
+    }
+
+    .compare-panel {
+      display: grid;
+      gap: 12px;
+      padding: 18px;
+      border: 1px solid var(--uk-line);
+      border-radius: 14px;
+      background: var(--uk-white);
+    }
+
+    .compare-panel h3 {
+      font-size: 17px;
+      color: var(--uk-primary);
+    }
+
+    .compare-meta {
+      color: var(--uk-muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .compare-metric-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .compare-metric {
+      display: grid;
+      grid-template-columns: minmax(120px, 1fr) auto;
+      gap: 8px 10px;
+      align-items: center;
+      padding: 11px 12px;
+      border: 1px solid var(--uk-line);
+      border-radius: 12px;
+      background: var(--uk-bg);
+    }
+
+    .compare-metric-label {
+      color: #40584F;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .compare-metric-value {
+      color: var(--uk-primary-dark);
+      font-size: 15px;
+      font-weight: 800;
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .compare-metric-detail {
+      grid-column: 1 / -1;
+      color: var(--uk-muted);
+      font-size: 12px;
+    }
+
+    .compare-side-charts,
+    .compare-chart-card {
+      display: grid;
+      gap: 12px;
+    }
+
+    .compare-chart-card {
+      padding: 18px;
+      border: 1px solid var(--uk-line);
+      border-radius: 14px;
+      background: var(--uk-white);
+    }
+
+    .compare-chart-card h2 {
+      margin: 0;
+      color: var(--uk-primary);
+      font-size: 17px;
+    }
+
+    .compare-energy-layout {
+      display: grid;
+      grid-template-columns: minmax(150px, 0.8fr) minmax(180px, 1.2fr);
+      gap: 14px;
+      align-items: center;
+    }
+
+    .compare-energy-pie-wrap {
+      position: relative;
+      width: min(180px, 100%);
+      aspect-ratio: 1;
+      justify-self: center;
+    }
+
+    .compare-energy-pie {
+      width: 100%;
+      height: 100%;
+      border: 1px solid var(--uk-line);
+      border-radius: 999px;
+      background: var(--uk-bg);
+      box-shadow: inset 0 0 0 12px #ffffff;
+    }
+
+    .compare-energy-center {
+      position: absolute;
+      inset: 50%;
+      display: grid;
+      width: 74px;
+      height: 74px;
+      place-items: center;
+      transform: translate(-50%, -50%);
+      border-radius: 999px;
+      background: #ffffff;
+      color: var(--uk-primary-dark);
+      font-size: 13px;
+      font-weight: 800;
+      text-align: center;
+      box-shadow: 0 8px 20px rgba(18, 53, 48, 0.12);
+    }
+
+    .compare-chart-legend {
+      display: grid;
+      gap: 8px;
+      color: var(--uk-muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .legend-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: var(--uk-secondary);
+    }
+
+    .legend-dot.aup {
+      background: var(--uk-warn);
+    }
+
+    .compare-macro-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .compare-macro-heading {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      color: #40584F;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .compare-macro-track {
+      display: flex;
+      height: 22px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: var(--uk-bg);
+      border: 1px solid var(--uk-line);
+    }
+
+    .compare-macro-segment {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      min-width: 0;
+      height: 100%;
+      padding-right: 8px;
+      color: var(--uk-white);
+      font-size: 11px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .compare-macro-segment.naup {
+      background: var(--uk-secondary);
+    }
+
+    .compare-macro-segment.aup {
+      background: var(--uk-warn);
+    }
+
+    .compare-macro-detail {
+      color: var(--uk-muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    @media (max-width: 780px) {
+      .compare-header,
+      .compare-mode-card {
+        grid-template-columns: 1fr;
+      }
+
+      .compare-header {
+        display: grid;
+        padding: 22px 20px;
+      }
+
+      .compare-status {
+        text-align: left;
+        min-width: 0;
+      }
+
+      .compare-controls,
+      .compare-summary-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .compare-field-grid,
+      .compare-energy-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .compare-shell {
+        padding-top: 96px;
+      }
+
+      .compare-card {
+        padding: 16px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; }
+    }
+  </style>
+  <link rel="stylesheet" href="ultrakcalc_topbar.css">
+  <link rel="stylesheet" href="ultrakcalc_footer.css">
+</head>
+<body>
+  <!-- Barra superior compartilhada (preenchida por ultrakcalc_topbar.js) -->
+  <header class="topbar"></header>
+
+  <main class="compare-shell">
+    <div class="compare-page">
+      <section class="compare-header">
+        <div>
+          <h1>Comparar recordatorios</h1>
+          <p>Analise energia e macronutrientes de AUP entre dois recordatorios, dois grupos ou um recordatorio contra um grupo.</p>
+        </div>
+        <div class="compare-status" id="compareDataStatus">Carregando dados</div>
+      </section>
+
+      <section class="compare-card">
+        <div class="compare-controls">
+          <div class="compare-control-card">
+            <h2>Comparar A</h2>
+            <div class="compare-field-grid">
+              <div class="compare-field">
+                <label for="compareTypeA">Tipo</label>
+                <select id="compareTypeA">
+                  <option value="record">Recordatorio</option>
+                  <option value="group">Grupo</option>
+                </select>
+              </div>
+              <div class="compare-field">
+                <label for="compareTargetA">Selecao</label>
+                <select id="compareTargetA"></select>
+              </div>
+            </div>
+          </div>
+
+          <div class="compare-control-card">
+            <h2>Comparar B</h2>
+            <div class="compare-field-grid">
+              <div class="compare-field">
+                <label for="compareTypeB">Tipo</label>
+                <select id="compareTypeB">
+                  <option value="record">Recordatorio</option>
+                  <option value="group">Grupo</option>
+                </select>
+              </div>
+              <div class="compare-field">
+                <label for="compareTargetB">Selecao</label>
+                <select id="compareTargetB"></select>
+              </div>
+            </div>
+          </div>
+
+          <div class="compare-mode-card" id="compareModeCard">
+            <div class="compare-field">
+              <label for="compareGroupMode">Modo de calculo para grupos</label>
+              <select id="compareGroupMode">
+                <option value="average">Media por recordatorio</option>
+                <option value="total">Soma total do grupo</option>
+              </select>
+            </div>
+            <button id="compareRunBtn" type="button">Comparar</button>
+          </div>
+        </div>
+
+        <div class="compare-empty" id="compareEmptyState">Nenhum resultado calculado.</div>
+
+        <div class="compare-results" id="compareResults" hidden>
+          <div class="compare-summary-grid">
+            <article class="compare-side-panel">
+              <div class="compare-panel" id="comparePanelA"></div>
+              <div class="compare-side-charts" id="compareChartsA"></div>
+            </article>
+            <article class="compare-side-panel">
+              <div class="compare-panel" id="comparePanelB"></div>
+              <div class="compare-side-charts" id="compareChartsB"></div>
+            </article>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase_config.js"></script>
+  <script src="ultrakcalc_cloud.js"></script>
+  <script src="comparar.js"></script>
+  <script src="ultrakcalc_topbar.js" defer></script>
+  <script src="ultrakcalc_footer.js" defer></script>
+  <script src="ultrakcalc_i18n.js" defer></script>
+</body>
+</html>
