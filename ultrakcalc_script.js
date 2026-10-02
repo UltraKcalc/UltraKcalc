@@ -1345,7 +1345,9 @@ if (typeof tbcaExtraFoodsData !== 'undefined' && Array.isArray(tbcaExtraFoodsDat
     if (!normalizedFoodName || existingTbcaFoodNames[normalizedFoodName]) return;
     foodsData.push(food);
     existingTbcaFoodNames[normalizedFoodName] = true;
-    novaMapping[normalizedFoodName] = 'classificação NOVA incerta';
+    novaMapping[normalizedFoodName] = (
+      typeof tbcaReviewedNovaMapping !== 'undefined' && tbcaReviewedNovaMapping[normalizedFoodName]
+    ) ? tbcaReviewedNovaMapping[normalizedFoodName] : 'classificação NOVA incerta';
     if (typeof tbcaExtraPofMapping !== 'undefined' && tbcaExtraPofMapping[normalizedFoodName]) {
       pofMapping[normalizedFoodName] = tbcaExtraPofMapping[normalizedFoodName];
     }
