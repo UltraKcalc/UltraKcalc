@@ -1331,6 +1331,26 @@ Object.assign(novaMapping, {
   "caponata de berinjela, conserva de berinjela, c/ sal, (berinjela, pimentoes coloridos, uva passa, azeite de oliva, vinagre de maca, c/ oleo, cebola e alho, c/ pimenta-do-reino, c/ sal),": "processado",
   "caponata de berinjela, conserva de berinjela, s/ sal, (berinjela, pimentoes coloridos, uva passa, azeite de oliva, vinagre de maca, c/ oleo, cebola e alho, c/ pimenta-do-reino, s/ sal),": "processado"
 });
+
+// Incorpora os alimentos adicionais fornecidos pelo usuário sem alterar a base original.
+// As classificações NOVA desses novos registros ficam incertas até revisão metodológica.
+if (typeof tbcaExtraFoodsData !== 'undefined' && Array.isArray(tbcaExtraFoodsData)) {
+  var existingTbcaFoodNames = {};
+  foodsData.forEach(function(food) {
+    existingTbcaFoodNames[normalizeString(food && food['Alimento'])] = true;
+  });
+  tbcaExtraFoodsData.forEach(function(food) {
+    var foodName = food && food['Alimento'];
+    var normalizedFoodName = normalizeString(foodName);
+    if (!normalizedFoodName || existingTbcaFoodNames[normalizedFoodName]) return;
+    foodsData.push(food);
+    existingTbcaFoodNames[normalizedFoodName] = true;
+    novaMapping[normalizedFoodName] = 'classificação NOVA incerta';
+    if (typeof tbcaExtraPofMapping !== 'undefined' && tbcaExtraPofMapping[normalizedFoodName]) {
+      pofMapping[normalizedFoodName] = tbcaExtraPofMapping[normalizedFoodName];
+    }
+  });
+}
 // Function to normalize food names for classification lookup: remove accents, convert to lowercase and trim
 function normalizeString(str) {
   return str ? str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim() : '';
