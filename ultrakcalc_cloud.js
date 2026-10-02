@@ -244,7 +244,7 @@
     var userId = currentUser && currentUser.id ? currentUser.id : undefined;
     var foodData = Object.assign({}, food || {});
     var name = foodData['Alimento'] || foodData.name || '';
-    var processingLevel = foodData.customProcessingLevel || 'nonUltra';
+    var processingLevel = foodData.customProcessingLevel || 'nova1';
     foodData['Alimento'] = name;
     foodData.customAdded = true;
     foodData.customProcessingLevel = processingLevel;
@@ -263,7 +263,7 @@
     var food = Object.assign({}, row.food_data || {});
     food['Alimento'] = food['Alimento'] || row.name || '';
     food.customAdded = true;
-    food.customProcessingLevel = row.processing_level || food.customProcessingLevel || 'nonUltra';
+    food.customProcessingLevel = row.processing_level || food.customProcessingLevel || 'nova1';
     return food;
   }
 

@@ -346,7 +346,7 @@
         <h3>Cadastrar alimento que não está na base</h3>
         <ol class="steps">
           <li>Na seção <span class="ui">Ferramentas</span>, toque em <span class="ui">Adicionar alimento</span>.</li>
-          <li>Preencha o nome e o <span class="ui">nível de processamento</span> (ultraprocessado ou não ultraprocessado) — ele define como o alimento entra nos gráficos de AUP.</li>
+          <li>Preencha o nome e escolha um dos quatro grupos NOVA: in natura/minimamente processado, ingrediente culinário processado, processado ou ultraprocessado. Essa escolha define como o alimento entra nos resultados e exportações.</li>
           <li>Informe energia, carboidratos, proteínas, lipídios e fibra <strong>por 100 g</strong> do alimento. Role para baixo para preencher também os micronutrientes que desejar — os não informados entram como zero.</li>
           <li>Toque em <span class="ui">Salvar alimento</span> — ele passa a aparecer na busca como os demais (aba <span class="ui">Adicionados</span>) e, se você estiver logado, é salvo também na nuvem.</li>
         </ol>
@@ -355,11 +355,11 @@
         <h3>Editar ou excluir alimentos cadastrados</h3>
         <ol class="steps">
           <li>Na seção <span class="ui">Ferramentas</span>, toque em <span class="ui">Editar alimentos cadastrados</span>. Abre uma lista com todos os alimentos que você criou, com energia por 100 g e classificação.</li>
-          <li><span class="ui">Editar</span> — reabre o formulário de cadastro já preenchido com todos os valores (incluindo micronutrientes). Você pode corrigir o nome, os nutrientes, as calorias e o nível de processamento. Toque em <span class="ui">Salvar alterações</span> para aplicar.</li>
+          <li><span class="ui">Editar</span> — reabre o formulário de cadastro já preenchido com todos os valores (incluindo micronutrientes). Você pode corrigir o nome, os nutrientes, as calorias e o grupo NOVA. Toque em <span class="ui">Salvar alterações</span> para aplicar.</li>
           <li><span class="ui">Excluir</span> — remove o alimento da sua base após confirmação. Ele some da busca, e a exclusão também é aplicada na nuvem se você estiver logado.</li>
         </ol>
         <div class="dica"><strong>Importante:</strong> editar ou excluir um alimento cadastrado <strong>não altera</strong> recordatórios já salvos — os itens lançados mantêm os valores da época do lançamento. Para atualizar um recordatório antigo, reabra-o e relance o item.</div>
-        <div class="dica"><strong>Classificação NOVA:</strong> alimentos multingredientes e descrições genéricas podem depender da marca, lista de ingredientes e forma de preparo. Use o seletor do lançamento para corrigir a classificação quando houver informação mais específica; a opção “NOVA da base” restaura o valor original.</div>
+        <div class="dica"><strong>Classificação NOVA:</strong> alimentos multingredientes e descrições genéricas podem depender da marca, lista de ingredientes e forma de preparo. Itens desconhecidos aparecem como “classificação NOVA incerta” e são separados nos gráficos até serem revisados. Use o seletor do lançamento para corrigir a classificação quando houver informação mais específica; a opção “NOVA da base” restaura o valor original.</div>
 
         <h3>Medida caseira personalizada</h3>
         <p>Em <span class="ui">Adicionar medida caseira por alimento</span>, associe uma medida (ex.: "colher de sopa") e sua equivalência em gramas a um alimento específico. A medida ficará disponível no lançamento daquele alimento, e a conversão para gramas é feita automaticamente.</p>
@@ -374,8 +374,8 @@
         <ul>
           <li><strong>Resumo dos principais nutrientes</strong> — energia e macronutrientes totais do recordatório.</li>
           <li><strong>Refeições</strong> — blocos expansíveis com os alimentos, macros por refeição e detalhes de micronutrientes por item.</li>
-          <li><strong>Energia por processamento</strong> — gráfico com a fração de energia vinda de ultraprocessados (AUP) e não ultraprocessados.</li>
-          <li><strong>Macronutrientes por processamento</strong> — carboidratos, proteínas e lipídios divididos por origem AUP × não AUP.</li>
+          <li><strong>Energia por processamento</strong> — gráfico com a fração de energia vinda de ultraprocessados (AUP), não ultraprocessados e itens de classificação incerta.</li>
+          <li><strong>Macronutrientes por processamento</strong> — carboidratos, proteínas e lipídios divididos por origem AUP, não AUP e incerta.</li>
           <li><strong>Totais de todos os nutrientes</strong> — tabela completa, incluindo micronutrientes.</li>
         </ul>
       </section>

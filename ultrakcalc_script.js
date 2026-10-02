@@ -694,7 +694,7 @@ var novaMapping = {
     "graviola, polpa, congelada,": "in natura ou minimamente processado",
     "guarana, em po,": "ingrediente culinário processado",
     "hamburguer de grao de bico, grelhado, c/ azeite de oliva, c/ sal, (grao de bico, farinha de trigo, paprica, pimenta-do-reino, c/ azeite de oliva, cebola e alho, c/ sal),": "in natura ou minimamente processado",
-    "hamburguer de soja, grelhado, c/ oleo de soja, c/ sal, (proteina texturarizada de soja (hidratada com caldo de legumes), farinha de rosca, farinha de trigo, ovo, salsinha e cebolinha, cebola e alho, pimenta-do-reino, c/ oleo de soja, c/ sal),": "processado",
+    "hamburguer de soja, grelhado, c/ oleo de soja, c/ sal, (proteina texturarizada de soja (hidratada com caldo de legumes), farinha de rosca, farinha de trigo, ovo, salsinha e cebolinha, cebola e alho, pimenta-do-reino, c/ oleo de soja, c/ sal),": "ultraprocessado",
     "hamburguer, bovino, industrializado, frito,": "ultraprocessado",
     "hamburguer, bovino, industrializado, grelhado,": "ultraprocessado",
     "hamburguer, industrializado, frango, grelhado, s/ oleo,": "ultraprocessado",
@@ -1170,8 +1170,8 @@ var novaMapping = {
     "soja, grao, seco em estufa, glycine max l. merril,": "in natura ou minimamente processado",
     "soja, grao, torrado (media de varias amostras), glycine max l. merril,": "in natura ou minimamente processado",
     "soja, grao, tostada, s/ casca, moida, glycine max l. merril,": "in natura ou minimamente processado",
-    "soja, proteina, texturizada, glycine max l. merril,": "ingrediente culinário processado",
-    "soja, proteina, texturizada, hidratada (c/ caldo de legumes), s/ sal,": "ingrediente culinário processado",
+    "soja, proteina, texturizada, glycine max l. merril,": "ultraprocessado",
+    "soja, proteina, texturizada, hidratada (c/ caldo de legumes), s/ sal,": "ultraprocessado",
     "soja, tofu, glycine max l.,": "in natura ou minimamente processado",
     "sonho, assado, c/ recheio de brigadeiro, c/ cobertura de chocolate, (farinha de trigo, ovo, margarina, leite, leite condensado, chocolate, sal, fermento quimico, oleo de soja para fritura, c/ acucar),": "ultraprocessado",
     "sonho, assado, c/ recheio de creme, polvilhado c/ acucar e canela, (farinha de trigo, ovo, margarina, leite, sal, fermento quimico, c/ acucar e canela),": "ultraprocessado",
@@ -1312,14 +1312,14 @@ var novaMapping = {
 // Extending novaMapping with additional entries for foods missing from the classification file.
 Object.assign(novaMapping, {
   "bebida alcoolica, aguardente, cachaca, brasil": "ultraprocessado",
-  "bebida alcoolica, arroz, saque,": "ultraprocessado",
+  "bebida alcoolica, arroz, saque,": "processado",
   "bebida alcoolica, caipirinha, (limao, cachaca e acucar),": "ultraprocessado",
   "bebida alcoolica, conhaque,": "ultraprocessado",
   "bebida alcoolica, vermute,": "ultraprocessado",
-  "bebida alcoolica, vinho (media diferentes amostras),": "ultraprocessado",
-  "bebida alcoolica, vinho, branco (media diferentes amostras),": "ultraprocessado",
-  "bebida alcoolica, vinho, rose (media diferentes amostras),": "ultraprocessado",
-  "bebida alcoolica, vinho, tinto (media diferentes amostras),": "ultraprocessado",
+  "bebida alcoolica, vinho (media diferentes amostras),": "processado",
+  "bebida alcoolica, vinho, branco (media diferentes amostras),": "processado",
+  "bebida alcoolica, vinho, rose (media diferentes amostras),": "processado",
+  "bebida alcoolica, vinho, tinto (media diferentes amostras),": "processado",
   "bebida, cerveja, sem alcool,": "ultraprocessado",
   "canudinho, c/ recheio de brigadeiro, (farinha de trigo, ovo, leite, oleo de soja e brigadeiro),": "ultraprocessado",
   "canudinho, c/ recheio de brigadeiro, c/ cobertura de chocolate, (farinha de trigo, ovo, leite, oleo de soja, brigadeiro e chocolate ao leite),": "ultraprocessado",
@@ -1346,7 +1346,7 @@ function getDefaultNovaClassification(foodName) {
   var key = normalizeString(foodName || '');
   return key && novaMapping.hasOwnProperty(key)
     ? novaMapping[key]
-    : 'in natura ou minimamente processado';
+    : 'classificação NOVA incerta';
 }
 
 function hasStoredNovaOverride(foodName, classNova) {
@@ -1757,18 +1757,35 @@ function applyCustomFoodMappings(food) {
   var name = getCustomFoodName(food);
   if (!name) return;
   var norm = normalizeString(name);
-  var processing = food && food.customProcessingLevel === 'ultra' ? 'ultra' : 'nonUltra';
-  if (processing === 'ultra') {
-    novaMapping[norm] = 'ultraprocessado';
+  var novaClass = getCustomFoodNovaClassification(food);
+  novaMapping[norm] = novaClass;
+  if (novaClass === 'ultraprocessado') {
     if (typeof pofMapping !== 'undefined' && pofMapping) {
       pofMapping[norm] = 'Produtos ultraprocessados';
     }
-  } else {
-    novaMapping[norm] = 'in natura ou minimamente processado';
+  } else if (novaClass === 'in natura ou minimamente processado') {
     if (typeof pofMapping !== 'undefined' && pofMapping) {
       pofMapping[norm] = 'in natura ou minimamente processado';
     }
+  } else if (typeof pofMapping !== 'undefined' && pofMapping) {
+    pofMapping[norm] = 'Outros produtos';
   }
+}
+
+function getCustomFoodNovaClassification(food) {
+  var level = food && food.customProcessingLevel ? food.customProcessingLevel : 'nova1';
+  if (level === 'ultra' || level === 'nova4') return 'ultraprocessado';
+  if (level === 'nova3') return 'processado';
+  if (level === 'nova2') return 'ingrediente culinário processado';
+  return 'in natura ou minimamente processado';
+}
+
+function getCustomProcessingLevelFromNova(label) {
+  var normalized = normalizeString(label || '');
+  if (normalized === normalizeString('ultraprocessado')) return 'nova4';
+  if (normalized === normalizeString('processado')) return 'nova3';
+  if (normalized === normalizeString('ingrediente culinário processado')) return 'nova2';
+  return 'nova1';
 }
 
 function upsertCustomFoodLocal(food, shouldPersist) {
@@ -1779,7 +1796,7 @@ function upsertCustomFoodLocal(food, shouldPersist) {
   var normalizedFood = Object.assign({}, food);
   normalizedFood['Alimento'] = name;
   normalizedFood.customAdded = true;
-  normalizedFood.customProcessingLevel = normalizedFood.customProcessingLevel || 'nonUltra';
+  normalizedFood.customProcessingLevel = normalizedFood.customProcessingLevel || 'nova1';
 
   var foodIndex = findFoodIndexByName(name);
   if (foodIndex >= 0) {
@@ -2072,6 +2089,10 @@ function isUltraProcessingLabel(label) {
   if (!normalized) return false;
   if (normalized.indexOf('nao ultraprocess') !== -1) return false;
   return normalized.indexOf('ultraprocess') !== -1;
+}
+
+function isUncertainNovaLabel(label) {
+  return normalizeString(label || '').indexOf('incerta') !== -1;
 }
 
 function formatWorkspaceDate(value) {
@@ -3169,7 +3190,7 @@ function recalcRow(row) {
         ? row.classNova
         : (preserveImportedNutrients && row.classNova
           ? row.classNova
-          : (novaMapping.hasOwnProperty(lkey) ? novaMapping[lkey] : 'in natura ou minimamente processado'));
+          : getDefaultNovaClassification(foodName));
       var cPof = preserveImportedNutrients && row.classPof ? row.classPof : normalizePofGroupLabel((typeof pofMapping !== 'undefined' && pofMapping && pofMapping.hasOwnProperty(lkey)) ? pofMapping[lkey] : 'Outros produtos');
       // Armazene as classificações completas na linha para uso na exportação
       row.classNova = cNova;
@@ -3271,6 +3292,7 @@ function createChartColorMap(groups, usePofGroups) {
   if (!usePofGroups) {
     colorMap['Não AUP'] = 'var(--uk-secondary)';
     colorMap['AUP'] = 'var(--uk-warn)';
+    colorMap['Incerta'] = '#8b95a5';
     return colorMap;
   }
   groups.forEach(function(group, index) {
@@ -3481,7 +3503,7 @@ function updateTotals() {
     var groupLabel = '';
 
     if (!novaClass && foodKeyForClass) {
-      novaClass = novaMapping.hasOwnProperty(foodKeyForClass) ? novaMapping[foodKeyForClass] : 'in natura ou minimamente processado';
+      novaClass = getDefaultNovaClassification(foodNameForClass);
       r.classNova = novaClass;
     }
 
@@ -3501,7 +3523,9 @@ function updateTotals() {
         clsCell.textContent = groupLabel;
       }
     } else {
-      groupLabel = isUltraProcessingLabel(novaClass) ? 'AUP' : 'Não AUP';
+      groupLabel = isUncertainNovaLabel(novaClass)
+        ? 'Incerta'
+        : (isUltraProcessingLabel(novaClass) ? 'AUP' : 'Não AUP');
     }
 
     addChartGroupValue(energyByGroup, groupLabel, energyVal);
@@ -3515,7 +3539,7 @@ function updateTotals() {
     return diff !== 0 ? diff : a.localeCompare(b, 'pt-BR');
   });
   if (!usePofGroups) {
-    chartGroupOrder = ['Não AUP', 'AUP'];
+    chartGroupOrder = ['Não AUP', 'AUP', 'Incerta'];
   }
   var chartColorMap = createChartColorMap(chartGroupOrder, usePofGroups);
   var energyChart = document.getElementById('energyChart');
@@ -5132,7 +5156,7 @@ function buildImportedCustomFoodProfile(record) {
     profile[key] = getImportNumber(record.nutrients[key]) / factor;
   });
   profile.customAdded = true;
-  profile.customProcessingLevel = isUltraProcessingLabel(record.classNova) ? 'ultra' : 'nonUltra';
+  profile.customProcessingLevel = getCustomProcessingLevelFromNova(record.classNova);
   return profile;
 }
 
@@ -5364,9 +5388,9 @@ function addNewFood() {
   }
   newFood['Alimento'] = name;
   foodsData.push(newFood);
-  // Normalizar nome e adicionar às classificações com valores padrão
+  // Normalizar nome sem presumir NOVA 1 quando não há dados de composição.
   var norm = normalizeString(name);
-  novaMapping[norm] = 'in natura ou minimamente processado';
+  novaMapping[norm] = 'classificação NOVA incerta';
   if (typeof pofMapping !== 'undefined' && pofMapping) {
     pofMapping[norm] = 'Outros produtos';
   }
@@ -6017,6 +6041,11 @@ async function saveNewFood() {
     showCalculatorToast('Informe o nome do alimento.', 'warning');
     return;
   }
+  var processingLevel = document.getElementById('newFoodProcessingLevel').value;
+  if (!processingLevel) {
+    showCalculatorToast('Selecione um dos quatro grupos NOVA.', 'warning');
+    return;
+  }
   // Verificar se já existe (em edição, permitir o próprio nome)
   var exists = foodsData.some(function(item){
     if (editingCustomFoodName && item['Alimento'].toLowerCase() === editingCustomFoodName.toLowerCase()) return false;
@@ -6069,7 +6098,7 @@ async function saveNewFood() {
   }
   // Adicionar marcação de alimento personalizado e o nível de processamento usado na criação
   newFood.customAdded = true;
-  newFood.customProcessingLevel = document.getElementById('newFoodProcessingLevel').value;
+  newFood.customProcessingLevel = processingLevel;
   var wasEditing = !!editingCustomFoodName;
   editingCustomFoodName = null;
   upsertCustomFoodLocal(newFood, true);
@@ -6089,7 +6118,9 @@ async function saveNewFood() {
   document.getElementById('newFoodProtein').value = 0;
   document.getElementById('newFoodLipids').value = 0;
   document.getElementById('newFoodFiber').value = 0;
-  document.getElementById('newFoodProcessingLevel').value = 'nonUltra';
+  document.getElementById('newFoodProcessingLevel').value = '';
+  var saveButton = document.getElementById('saveNewFoodBtn');
+  if (saveButton) saveButton.disabled = true;
   // Resetar campos de micronutrientes para zero
   if (typeof micronutrientKeysList !== 'undefined') {
     micronutrientKeysList.forEach(function(key) {
@@ -6188,7 +6219,7 @@ function startEditCustomFood(name) {
   setVal('newFoodProtein', parseFloat(food['Prote\u00edna']) || 0);
   setVal('newFoodLipids', parseFloat(food['Lip\u00eddios']) || 0);
   setVal('newFoodFiber', parseFloat(food['Fibra alimentar']) || 0);
-  setVal('newFoodProcessingLevel', food.customProcessingLevel === 'ultra' ? 'ultra' : 'nonUltra');
+  setVal('newFoodProcessingLevel', getCustomProcessingLevelFromNova(getCustomFoodNovaClassification(food)));
 
   if (typeof micronutrientKeysList !== 'undefined') {
     micronutrientKeysList.forEach(function(key) {
@@ -6222,7 +6253,7 @@ function renderCustomFoodsList() {
     var meta = document.createElement('span');
     meta.className = 'cf-meta';
     meta.textContent = (parseFloat(food['Energia (kcal)']) || 0).toFixed(0) + ' kcal/100g \u00b7 ' +
-      (food.customProcessingLevel === 'ultra' ? 'Ultraprocessado' : 'N\u00e3o ultraprocessado');
+      getCustomFoodNovaClassification(food);
 
     var editBtn = document.createElement('button');
     editBtn.type = 'button';
@@ -6624,21 +6655,8 @@ window.onload = function() {
               opt.value = cf['Alimento'];
               dataListEl.appendChild(opt);
             }
-            // Atualizar mapeamento de classificação com base no nível de processamento salvo
-            var normKey = normalizeString(cf['Alimento']);
-            if (cf.customProcessingLevel) {
-              if (cf.customProcessingLevel === 'ultra') {
-                novaMapping[normKey] = 'ultraprocessado';
-                if (typeof pofMapping !== 'undefined' && pofMapping) {
-                  pofMapping[normKey] = 'Produtos ultraprocessados';
-                }
-              } else {
-                novaMapping[normKey] = 'in natura ou minimamente processado';
-                if (typeof pofMapping !== 'undefined' && pofMapping) {
-                  pofMapping[normKey] = 'in natura ou minimamente processado';
-                }
-              }
-            }
+            // Atualizar os quatro grupos NOVA, preservando valores legados ultra/nonUltra.
+            applyCustomFoodMappings(cf);
           }
         });
       }

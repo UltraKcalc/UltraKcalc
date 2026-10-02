@@ -33,10 +33,26 @@ Para a análise binária atual (AUP versus não AUP), muitas dessas preparaçõe
 
 Pães, bolos, biscoitos, pizzas, massas prontas, hambúrgueres, carnes curadas e pratos prontos podem pertencer ao grupo 3 ou 4. A classificação deve depender da lista de ingredientes: somente alimentos do grupo 1 e ingredientes do grupo 2 favorecem grupo 3; substâncias sem uso culinário e aditivos cosméticos favorecem grupo 4. Descrições genéricas precisam ser marcadas como incertas.
 
-## Mudança implementada
+## Correções aplicadas na base
 
-Cada alimento lançado agora oferece um seletor com os quatro grupos NOVA e a opção de restaurar o valor da base. A alteração é específica daquele lançamento e passa a alimentar os gráficos, o recordatório salvo, a nuvem e as exportações CSV/XLSX/PDF.
+Foram aplicadas oito correções de alta confiança:
+
+- `hamburguer de soja ... (proteina texturizada de soja ...)`: grupo 3 → grupo 4;
+- `soja, proteina, texturizada`: grupo 2 → grupo 4;
+- `soja, proteina, texturizada, hidratada`: grupo 2 → grupo 4;
+- saquê: grupo 4 → grupo 3;
+- vinho genérico, branco, rosé e tinto: grupo 4 → grupo 3.
+
+Proteínas isoladas, hidrolisadas e texturizadas, incluindo suplementos proteicos, são tratadas como ultraprocessadas. Os dois suplementos já identificados nominalmente na base (`Sustagen` e `suplemento à base de proteína em pó`) já estavam no grupo 4 e foram mantidos.
+
+Após as correções, a base contém 745 itens no grupo 1, 41 no grupo 2, 125 no grupo 3 e 275 no grupo 4.
+
+## Mudanças implementadas na interface
+
+Cada alimento lançado oferece um seletor com os quatro grupos NOVA e a opção de restaurar o valor da base. A alteração é específica daquele lançamento e passa a alimentar os gráficos, o recordatório salvo, a nuvem e as exportações CSV/XLSX/PDF. O cadastro de alimentos próprios também passou da escolha binária para os quatro grupos.
+
+Alimentos ausentes do mapeamento não são mais classificados automaticamente no grupo 1. Eles recebem `classificação NOVA incerta` e aparecem em uma categoria separada nos gráficos, evitando que a ausência de informação reduza artificialmente a estimativa de ultraprocessados.
 
 ## Próximo passo recomendado para a base
 
-Não foi feita uma reclassificação em massa: o artigo exige contexto e, em muitos casos, lista de ingredientes. Recomenda-se uma planilha de adjudicação com `classificação atual`, `alternativa`, `grau de certeza`, `justificativa`, `fonte/ingredientes` e revisão independente por dois avaliadores. Vinho e saquê podem ser priorizados como correções de alta confiança; descrições genéricas e preparações multingredientes devem ser priorizadas para marcação de incerteza e análise de sensibilidade.
+Não foi feita uma alteração automática de itens ambíguos: o artigo exige contexto e, em muitos casos, lista de ingredientes. Recomenda-se uma planilha de adjudicação com `classificação atual`, `alternativa`, `grau de certeza`, `justificativa`, `fonte/ingredientes` e revisão independente por dois avaliadores. Descrições genéricas e preparações multingredientes devem ser priorizadas para marcação de incerteza e análise de sensibilidade.
