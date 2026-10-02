@@ -1335,6 +1335,68 @@ Object.assign(novaMapping, {
 function normalizeString(str) {
   return str ? str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim() : '';
 }
+var novaGroupOptions = [
+  'in natura ou minimamente processado',
+  'ingrediente culinário processado',
+  'processado',
+  'ultraprocessado'
+];
+
+function getDefaultNovaClassification(foodName) {
+  var key = normalizeString(foodName || '');
+  return key && novaMapping.hasOwnProperty(key)
+    ? novaMapping[key]
+    : 'in natura ou minimamente processado';
+}
+
+function hasStoredNovaOverride(foodName, classNova) {
+  return !!classNova && normalizeString(classNova) !== normalizeString(getDefaultNovaClassification(foodName));
+}
+
+function applyNovaClassification(row, value, overridden) {
+  if (!row) return;
+  row.classNova = value || getDefaultNovaClassification(
+    row.getElementsByClassName('foodInput')[0] ? row.getElementsByClassName('foodInput')[0].value : ''
+  );
+  row.novaOverride = !!overridden;
+  recalcRow(row);
+}
+
+function createNovaClassificationSelect(row) {
+  var foodInput = row ? row.getElementsByClassName('foodInput')[0] : null;
+  var foodName = foodInput ? foodInput.value.trim() : '';
+  var defaultValue = getDefaultNovaClassification(foodName);
+  var select = document.createElement('select');
+  select.className = 'nova-override-select';
+  select.setAttribute('aria-label', 'Alterar classificação NOVA de ' + (foodName || 'alimento'));
+  select.title = 'A alteração vale para este lançamento e será refletida nos resultados e exportações.';
+
+  var defaultOption = document.createElement('option');
+  defaultOption.value = '__default__';
+  defaultOption.textContent = 'NOVA da base: ' + defaultValue;
+  select.appendChild(defaultOption);
+
+  novaGroupOptions.forEach(function(label) {
+    var option = document.createElement('option');
+    option.value = label;
+    option.textContent = label;
+    select.appendChild(option);
+  });
+
+  select.value = row && row.novaOverride && novaGroupOptions.indexOf(row.classNova) !== -1
+    ? row.classNova
+    : '__default__';
+  select.addEventListener('change', function() {
+    if (select.value === '__default__') {
+      applyNovaClassification(row, defaultValue, false);
+    } else {
+      applyNovaClassification(row, select.value, true);
+    }
+    renderMealModalRows();
+    renderMealBoard();
+  });
+  return select;
+}
 function normalizePofGroupLabel(label) {
   var value = label === null || label === undefined ? '' : String(label).trim();
   if (!value) return 'Outros produtos';
@@ -2135,6 +2197,7 @@ function clearRowValues(row) {
   row.nutrients = {};
   row.classNova = '';
   row.classPof = '';
+  row.novaOverride = false;
   row.className = row.className.replace(/\bprocessing-(ultra|non-ultra)-row\b/g, '').replace(/\s+/g, ' ').trim();
   updateRowStatusDisplay(row, 'row-incomplete', 'Incompleta');
 }
@@ -2147,6 +2210,7 @@ function updateRowDraftState(row) {
     clearRowValues(row);
   } else {
     row.nutrients = {};
+    row.novaOverride = false;
     var macroCells = row.getElementsByClassName('macroCell');
     for (var i = 0; i < macroCells.length; i++) {
       macroCells[i].textContent = '';
@@ -2724,18 +2788,30 @@ function renderMealModalRows() {
     var portionInput = row.getElementsByClassName('portionInput')[0];
     var qtyInput = row.getElementsByClassName('qtyInput')[0];
     var unitSelect = row.getElementsByClassName('unitSelect')[0];
-    var classCell = row.getElementsByClassName('novaCell')[0];
     var rn = row.nutrients || {};
     var item = document.createElement('div');
     item.className = 'meal-modal-food-row';
-    item.innerHTML =
-      '<div><div class="meal-modal-food-name">' + (foodInput ? foodInput.value : '') + '</div><div class="meal-modal-food-meta">' + (classCell ? classCell.textContent : '') + '</div></div>' +
-      '<span class="meal-modal-food-meta">' + formatMeasureSelectionForDisplay(portionInput, unitSelect) + '</span>' +
-      '<span class="meal-modal-food-meta">Qtd. ' + (qtyInput ? qtyInput.value : '') + '</span>' +
-      '<span class="meal-modal-food-meta">' + parseFloat(rn['Energia (kcal)'] || 0).toFixed(0) + ' kcal</span>' +
-      '<span class="meal-modal-food-meta">' + parseFloat(rn['Carboidrato total'] || 0).toFixed(1) + ' g C</span>' +
-      '<span class="meal-modal-food-meta">' + parseFloat(rn['Proteína'] || 0).toFixed(1) + ' g P</span>' +
-      '<span class="meal-modal-food-meta">' + parseFloat(rn['Lipídios'] || 0).toFixed(1) + ' g L</span>';
+    var foodSummary = document.createElement('div');
+    var foodName = document.createElement('div');
+    foodName.className = 'meal-modal-food-name';
+    foodName.textContent = foodInput ? foodInput.value : '';
+    foodSummary.appendChild(foodName);
+    foodSummary.appendChild(createNovaClassificationSelect(row));
+    item.appendChild(foodSummary);
+
+    [
+      formatMeasureSelectionForDisplay(portionInput, unitSelect),
+      'Qtd. ' + (qtyInput ? qtyInput.value : ''),
+      parseFloat(rn['Energia (kcal)'] || 0).toFixed(0) + ' kcal',
+      parseFloat(rn['Carboidrato total'] || 0).toFixed(1) + ' g C',
+      parseFloat(rn['Proteína'] || 0).toFixed(1) + ' g P',
+      parseFloat(rn['Lipídios'] || 0).toFixed(1) + ' g L'
+    ].forEach(function(value) {
+      var meta = document.createElement('span');
+      meta.className = 'meal-modal-food-meta';
+      meta.textContent = value;
+      item.appendChild(meta);
+    });
     var details = document.createElement('button');
     details.type = 'button';
     details.className = 'meal-modal-detail';
@@ -3089,7 +3165,11 @@ function recalcRow(row) {
       // Normaliza o nome para a chave
       var lkey = normalizeString(foodName);
       // Calcule as classes NOVA e POF independentemente. Se não existir na base, use valores padrão.
-      var cNova = preserveImportedNutrients && row.classNova ? row.classNova : (novaMapping.hasOwnProperty(lkey) ? novaMapping[lkey] : 'in natura ou minimamente processado');
+      var cNova = row.novaOverride && row.classNova
+        ? row.classNova
+        : (preserveImportedNutrients && row.classNova
+          ? row.classNova
+          : (novaMapping.hasOwnProperty(lkey) ? novaMapping[lkey] : 'in natura ou minimamente processado'));
       var cPof = preserveImportedNutrients && row.classPof ? row.classPof : normalizePofGroupLabel((typeof pofMapping !== 'undefined' && pofMapping && pofMapping.hasOwnProperty(lkey)) ? pofMapping[lkey] : 'Outros produtos');
       // Armazene as classificações completas na linha para uso na exportação
       row.classNova = cNova;
@@ -5701,6 +5781,7 @@ function editSavedSession(index) {
     tr.importedFromSpreadsheet = !!rec.importedFromSpreadsheet;
     tr.classNova = rec.classNova || '';
     tr.classPof = rec.classPof ? normalizePofGroupLabel(rec.classPof) : '';
+    tr.novaOverride = hasStoredNovaOverride(rec.food, rec.classNova);
     // Atualizar células de macronutrientes
     var macroCells = tr.getElementsByClassName('macroCell');
     for (var i = 0; i < macroCells.length; i++) {
@@ -5809,6 +5890,7 @@ function exportPdfSession(index) {
     tr.importedFromSpreadsheet = !!rec.importedFromSpreadsheet;
     tr.classNova = rec.classNova || '';
     tr.classPof = rec.classPof ? normalizePofGroupLabel(rec.classPof) : '';
+    tr.novaOverride = hasStoredNovaOverride(rec.food, rec.classNova);
     var macroCells = tr.getElementsByClassName('macroCell');
     for (var j = 0; j < macroCells.length; j++) {
       var k = macroCells[j].getAttribute('data-key');
@@ -5862,6 +5944,7 @@ function exportPdfSession(index) {
         row.importedFromSpreadsheet = !!rec.importedFromSpreadsheet;
         row.classNova = rec.classNova || '';
         row.classPof = rec.classPof ? normalizePofGroupLabel(rec.classPof) : '';
+        row.novaOverride = hasStoredNovaOverride(rec.food, rec.classNova);
         var macros = row.getElementsByClassName('macroCell');
         for (var h = 0; h < macros.length; h++) {
           var key = macros[h].getAttribute('data-key');
