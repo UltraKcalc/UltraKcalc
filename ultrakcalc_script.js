@@ -1332,6 +1332,29 @@ Object.assign(novaMapping, {
   "caponata de berinjela, conserva de berinjela, s/ sal, (berinjela, pimentoes coloridos, uva passa, azeite de oliva, vinagre de maca, c/ oleo, cebola e alho, c/ pimenta-do-reino, s/ sal),": "processado"
 });
 
+// Diferencia registros legados que tinham o mesmo nome, mas códigos e composições
+// distintos na TBCA, antes de aplicar a deduplicação por nome.
+if (typeof tbcaJsonLegacyFoodRenames !== 'undefined' && Array.isArray(tbcaJsonLegacyFoodRenames)) {
+  tbcaJsonLegacyFoodRenames.forEach(function(rule) {
+    var candidate = foodsData.find(function(food) {
+      return food && food['Alimento'] === rule.fromName &&
+        Number(food['Proteína']) === Number(rule.protein) &&
+        Number(food['Lipídios']) === Number(rule.fat) &&
+        Number(food['Carboidrato total']) === Number(rule.carbohydrate);
+    });
+    if (candidate) {
+      candidate['Alimento'] = rule.toName;
+      var renamedKey = normalizeString(rule.toName);
+      if (typeof tbcaJsonNovaMapping !== 'undefined' && tbcaJsonNovaMapping[renamedKey]) {
+        novaMapping[renamedKey] = tbcaJsonNovaMapping[renamedKey];
+      }
+      if (typeof tbcaJsonPofMapping !== 'undefined' && tbcaJsonPofMapping[renamedKey]) {
+        pofMapping[renamedKey] = tbcaJsonPofMapping[renamedKey];
+      }
+    }
+  });
+}
+
 // Incorpora os alimentos adicionais fornecidos pelo usuário sem alterar a base original.
 // As classificações NOVA desses novos registros ficam incertas até revisão metodológica.
 if (typeof tbcaExtraFoodsData !== 'undefined' && Array.isArray(tbcaExtraFoodsData)) {
@@ -1347,10 +1370,21 @@ if (typeof tbcaExtraFoodsData !== 'undefined' && Array.isArray(tbcaExtraFoodsDat
     existingTbcaFoodNames[normalizedFoodName] = true;
     novaMapping[normalizedFoodName] = (
       typeof tbcaReviewedNovaMapping !== 'undefined' && tbcaReviewedNovaMapping[normalizedFoodName]
-    ) ? tbcaReviewedNovaMapping[normalizedFoodName] : 'classificação NOVA incerta';
+    ) ? tbcaReviewedNovaMapping[normalizedFoodName] : (
+      typeof tbcaJsonNovaMapping !== 'undefined' && tbcaJsonNovaMapping[normalizedFoodName]
+    ) ? tbcaJsonNovaMapping[normalizedFoodName] : 'classificação NOVA incerta';
     if (typeof tbcaExtraPofMapping !== 'undefined' && tbcaExtraPofMapping[normalizedFoodName]) {
       pofMapping[normalizedFoodName] = tbcaExtraPofMapping[normalizedFoodName];
     }
+  });
+}
+// Acrescenta manganês aos nutrientes. Os nomes alternativos e demais metadados
+// ficam no mapa separado para não serem tratados como nutrientes nos cálculos.
+if (typeof tbcaJsonFoodComplements !== 'undefined' && tbcaJsonFoodComplements) {
+  foodsData.forEach(function(food) {
+    var complement = food && tbcaJsonFoodComplements[food['Alimento']];
+    if (!complement) return;
+    food['Manganês'] = Number(complement['Manganês']) || 0;
   });
 }
 // Function to normalize food names for classification lookup: remove accents, convert to lowercase and trim
@@ -1452,6 +1486,7 @@ var micronutrientDisplayKeys = [
   "Potássio",
   "Zinco",
   "Cobre",
+  "Manganês",
   "Selênio",
   "Vitamina A (RE)",
   "Vitamina A (RAE)",
@@ -1474,6 +1509,7 @@ var nutrientUnitMap = {
   "Potássio": "mg",
   "Zinco": "mg",
   "Cobre": "mg",
+  "Manganês": "mg",
   "Selênio": "mcg",
   "Vitamina A (RE)": "mcg",
   "Vitamina A (RAE)": "mcg",
@@ -2350,8 +2386,22 @@ function getFoodSearchOrigin(food) {
   return food && food.customAdded ? 'Alimentos Adicionados' : 'UltraKcalc';
 }
 
-function getFoodSearchScore(foodName, normalizedQuery, terms) {
-  var normalizedName = normalizeString(foodName).replace(/\s+/g, ' ');
+function getFoodSearchableName(food) {
+  if (!food) return '';
+  var complement = typeof tbcaJsonFoodComplements !== 'undefined' && tbcaJsonFoodComplements
+    ? tbcaJsonFoodComplements[food['Alimento']]
+    : null;
+  return [
+    food['Alimento'],
+    complement && complement['Nome simplificado TBCA'],
+    complement && complement['Nome original TBCA'],
+    complement && complement['Marca TBCA'],
+    complement && complement['Código TBCA']
+  ].filter(Boolean).join(' ');
+}
+
+function getFoodSearchScore(searchableName, normalizedQuery, terms) {
+  var normalizedName = normalizeString(searchableName).replace(/\s+/g, ' ');
   if (!normalizedQuery) return -1;
   for (var i = 0; i < terms.length; i++) {
     if (normalizedName.indexOf(terms[i]) === -1) return -1;
@@ -2363,7 +2413,7 @@ function getFoodSearchScore(foodName, normalizedQuery, terms) {
   terms.forEach(function(term) {
     if (normalizedName.indexOf(term) === 0) score += 60;
   });
-  return score - Math.min(foodName.length, 220) / 10;
+  return score - Math.min(searchableName.length, 220) / 10;
 }
 
 function getMealFoodSearchResults(query) {
@@ -2381,7 +2431,7 @@ function getMealFoodSearchResults(query) {
     if (seen[normalizedNameKey]) return;
     var score = mealFoodSearchFilter === 'favorites' && !normalizedQuery
       ? 0
-      : getFoodSearchScore(foodName, normalizedQuery, terms);
+      : getFoodSearchScore(getFoodSearchableName(food), normalizedQuery, terms);
     if (score < 0) return;
     seen[normalizedNameKey] = true;
     results.push({ food: food, name: foodName, score: score });

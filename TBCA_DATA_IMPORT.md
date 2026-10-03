@@ -8,9 +8,15 @@ Importação realizada em 2 de outubro de 2026 a partir do arquivo `index.html` 
 - 4.055 correspondências de descrição para os códigos POF presentes na compilação;
 - 5.546 vínculos diretos de medidas caseiras da TBCA, incluindo 2.441 vínculos confirmados na auditoria das fichas oficiais atuais;
 - 15.677 vínculos de medidas de referência recuperados do arquivo enviado, associados a 1.255 descrições;
-- 5.242 registros alimentares, 21.223 opções de medidas e 4.970 descrições de alimentos com ao menos uma medida após a união das fontes.
+- 5.674 registros alimentares, 26.589 opções de medidas e 5.673 descrições de alimentos com ao menos uma medida após a atualização de 3 de outubro de 2026.
 
-As medidas diretamente vinculadas à TBCA permanecem sem alteração. As opções recuperadas do arquivo enviado são identificadas na interface pelo sufixo `referência adicional`: 24 foram associadas por igualdade normalizada de nome e as demais por correspondência do nome principal do alimento, nunca por ingredientes citados dentro da receita. Esse procedimento cobriu 1.251 alimentos que antes ofereciam somente gramas. A auditoria posterior consultou as 2.248 descrições restantes: 1.977 receberam ao menos uma medida oficial confirmada e 271 continuam apenas com entrada em gramas por não apresentarem uma medida nomeada e segura na ficha pública.
+As medidas diretamente vinculadas à TBCA permanecem sem alteração. As opções recuperadas do arquivo enviado são identificadas na interface pelo sufixo `referência adicional`: 24 foram associadas por igualdade normalizada de nome e as demais por correspondência do nome principal do alimento, nunca por ingredientes citados dentro da receita. Esse procedimento cobriu 1.251 alimentos que antes ofereciam somente gramas. Na auditoria de 2 de outubro, 1.977 das 2.248 descrições então pendentes receberam ao menos uma medida oficial confirmada; a atualização descrita abaixo complementou a cobertura com o arquivo mais recente.
+
+## Atualização de 3 de outubro de 2026
+
+O arquivo `tbca-alimentos.json` fornecido pelo responsável pelo projeto contém 5.672 códigos TBCA. A comparação por código e composição identificou 432 códigos ausentes na execução anterior. Todos foram incorporados com composição por 100 g ou 100 mL, nome original, nome simplificado, marca, unidade-base, manganês e medidas caseiras. Um registro legado que compartilhava nome com outro código foi diferenciado pelo código TBCA; outras colisões do arquivo receberam o mesmo tratamento sem alterar os nomes já utilizados em recordatórios existentes.
+
+Os 5.672 códigos do arquivo estão representados e possuem medida caseira nomeada. Somados aos dois registros anteriores que não aparecem no arquivo novo, a ferramenta oferece 5.674 alimentos selecionáveis. Foram mesclados 9.125 vínculos de medidas do novo arquivo, com deduplicação por nome normalizado, peso/volume e unidade.
 
 Na auditoria oficial foram lidos somente o nome da medida caseira e o peso ou volume indicado no cabeçalho da ficha; os valores da tabela de nutrientes não foram copiados. Cabeçalhos que continham apenas um peso, sem nome de medida, foram descartados. Também foram excluídas 166 ocorrências de “porção Anvisa” presentes no acesso técnico em inglês, mas ausentes da ficha pública atual em português.
 

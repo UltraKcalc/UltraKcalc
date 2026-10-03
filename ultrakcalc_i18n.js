@@ -426,9 +426,9 @@
     'No topo da Calculadora, preencha Participante, Pesquisador, Data e o padrão de classificação. Esses dados identificam o recordatório nos relatórios e na comparação.': [
       'At the top of the Calculator, fill in <span class="ui">Participant</span>, <span class="ui">Researcher</span>, <span class="ui">Date</span> and the classification standard. This data identifies the recall in reports and comparisons.',
       'En la parte superior de la Calculadora, complete <span class="ui">Participante</span>, <span class="ui">Investigador</span>, <span class="ui">Fecha</span> y el estándar de clasificación. Estos datos identifican el recordatorio en los informes y en la comparación.'],
-    'Em Refeições do recordatório, escolha o tipo (café da manhã, almoço, jantar…) e toque em Adicionar refeição.': [
-      'In <span class="ui">Recall meals</span>, choose the type (breakfast, lunch, dinner…) and tap <span class="ui">Add meal</span>.',
-      'En <span class="ui">Comidas del recordatorio</span>, elija el tipo (desayuno, almuerzo, cena…) y toque en <span class="ui">Agregar comida</span>.'],
+    'Em Refeições do recordatório, escolha o tipo (café da manhã, almoço, jantar…) e toque em Adicionar alimento para abrir a refeição.': [
+      'In <span class="ui">Recall meals</span>, choose the type (breakfast, lunch, dinner…) and tap <span class="ui">Add food</span> to open the meal.',
+      'En <span class="ui">Comidas del recordatorio</span>, elija el tipo (desayuno, almuerzo, cena…) y toque en <span class="ui">Agregar alimento</span> para abrir la comida.'],
     'No campo Alimento, digite para buscar na base TBCA. Use as abas para filtrar e a estrela para favoritar os itens que você usa com frequência.': [
       'In the <span class="ui">Food</span> field, type to search the TBCA database. Use the tabs to filter and the star to favorite items you use often.',
       'En el campo <span class="ui">Alimento</span>, escriba para buscar en la base TBCA. Use las pestañas para filtrar y la estrella para marcar como favoritos los ítems que usa con frecuencia.'],
@@ -519,9 +519,9 @@
     'Tipo de classificação — NOVA (padrão) ou POF; define como os alimentos serão classificados nos gráficos e relatórios.': [
       '<strong>Classification type</strong> — NOVA (default) or POF; defines how foods are classified in charts and reports.',
       '<strong>Tipo de clasificación</strong> — NOVA (predeterminado) o POF; define cómo se clasifican los alimentos en gráficos e informes.'],
-    'Em Refeições do recordatório, escolha o tipo (café da manhã, almoço, jantar…) e toque em Adicionar refeição. Você pode adicionar quantas refeições precisar, inclusive repetidas usando o tipo Extra.': [
-      'In <span class="ui">Recall meals</span>, choose the type (breakfast, lunch, dinner…) and tap <span class="ui">Add meal</span>. You can add as many meals as needed, including repeats using the <span class="ui">Extra</span> type.',
-      'En <span class="ui">Comidas del recordatorio</span>, elija el tipo (desayuno, almuerzo, cena…) y toque en <span class="ui">Agregar comida</span>. Puede agregar tantas comidas como necesite, incluso repetidas usando el tipo <span class="ui">Extra</span>.'],
+    'Em Refeições do recordatório, escolha o tipo (café da manhã, almoço, jantar…) e toque em Adicionar alimento para abrir a refeição. Você pode criar quantas refeições precisar, inclusive repetidas usando o tipo Extra.': [
+      'In <span class="ui">Recall meals</span>, choose the type (breakfast, lunch, dinner…) and tap <span class="ui">Add food</span> to open the meal. You can create as many meals as needed, including repeats using the <span class="ui">Extra</span> type.',
+      'En <span class="ui">Comidas del recordatorio</span>, elija el tipo (desayuno, almuerzo, cena…) y toque en <span class="ui">Agregar alimento</span> para abrir la comida. Puede crear tantas comidas como necesite, incluso repetidas usando el tipo <span class="ui">Extra</span>.'],
     'No campo Alimento, digite para buscar na base TBCA. Use as abas Todos, Favoritos e Adicionados para filtrar, e a estrela para favoritar os itens que você usa com frequência.': [
       'In the <span class="ui">Food</span> field, type to search the TBCA database. Use the <span class="ui">All</span>, <span class="ui">Favorites</span> and <span class="ui">Added</span> tabs to filter, and the star to favorite items you use often.',
       'En el campo <span class="ui">Alimento</span>, escriba para buscar en la base TBCA. Use las pestañas <span class="ui">Todos</span>, <span class="ui">Favoritos</span> y <span class="ui">Agregados</span> para filtrar, y la estrella para marcar como favoritos los ítems que usa con frecuencia.'],
